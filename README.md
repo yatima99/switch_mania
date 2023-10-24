@@ -38,3 +38,6 @@ switch maniaでは、キーボードの写真と打鍵音を投稿し、他の�
 ### その後の機能
 * フォロー機能
 * 投票機能
+
+## 画面遷移図
+[URL](https://www.figma.com/file/GR3uhh7ZEvFQkYrkiVLJ80/%E7%84%A1%E9%A1%8C?type=design&node-id=0%3A1&mode=design&t=c1IWaGpkZxpND7u4-1)
