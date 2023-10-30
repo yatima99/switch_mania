@@ -43,4 +43,4 @@ switch maniaでは、キーボードの写真と打鍵音を投稿し、他の�
 [画面遷移図](https://www.figma.com/file/GR3uhh7ZEvFQkYrkiVLJ80/%E7%84%A1%E9%A1%8C?type=design&node-id=0%3A1&mode=design&t=c1IWaGpkZxpND7u4-1)
 
 ## ER図
-[ER図](https://gyazo.com/5c09eba87dde670f2de65f6f5ad1f498)
+[ER図](https://gyazo.com/e35d0cfa774b100e3ca7fac03e799283)
