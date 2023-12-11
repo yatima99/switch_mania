@@ -24,6 +24,9 @@ gem "puma", "~> 5.0"
 # cors設定
 gem "rack-cors"
 
+# 日本語化
+gem "rails-i18n"
+
 gem "rails", "~> 7.0.4"
 
 # タイムゾーン情報を提供する
