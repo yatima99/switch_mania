@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Post, type: :model do
-    context "factoryのデフォルト設定に従った時" do
+  context "factoryのデフォルト設定に従った時" do
     subject { create(:post) }
 
     it "正常にレコードを新規作成できる" do
