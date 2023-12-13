@@ -16,6 +16,9 @@ gem "devise"
 gem "devise-i18n"
 gem "devise_token_auth"
 
+# ページネーション
+gem "kaminari"
+
 # MySQLに接続する
 gem "mysql2", "~> 0.5"
 
@@ -32,6 +35,7 @@ gem "rails", "~> 7.0.4"
 # タイムゾーン情報を提供する
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 group :development, :test do
+  gem "bullet"
   gem "factory_bot_rails"
   gem "faker"
   gem "letter_opener_web"
