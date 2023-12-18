@@ -22,6 +22,9 @@ gem "enum_help"
 # ページネーション
 gem "kaminari"
 
+# 画像のアップロード
+gem "carrierwave"
+
 # MySQLに接続する
 gem "mysql2", "~> 0.5"
 
