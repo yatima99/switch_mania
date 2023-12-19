@@ -14,6 +14,9 @@ type PostProps = {
   id: number
   title: string
   createdAt: string
+  image: {
+    url: string
+  }
   user: {
     name: string
   }
@@ -42,7 +45,11 @@ const Index: NextPage = () => {
           {posts.map((post: PostProps, i: number) => (
             <Grid key={i} item xs={12} md={6}>
               <Link href={'/posts/' + post.id}>
-                <PostCard title={post.title} userName={post.user.name} />
+                <PostCard
+                  title={post.title}
+                  userName={post.user.name}
+                  image_url={post.image.url}
+                />
               </Link>
             </Grid>
           ))}
