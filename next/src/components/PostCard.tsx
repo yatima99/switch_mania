@@ -3,6 +3,7 @@ import CardMedia from '@mui/material/CardMedia'
 type PostCardProps = {
   title: string
   userName: string
+  image_url: string
 }
 
 const omit = (text: string) => (len: number) => (ellipsis: string) =>
@@ -11,7 +12,12 @@ const omit = (text: string) => (len: number) => (ellipsis: string) =>
 const PostCard = (props: PostCardProps) => {
   return (
     <Card>
-      <CardMedia component="img" height="194" image="/hhkb.jpg" alt="Pa" />
+      <CardMedia
+        component="img"
+        height="194"
+        image={props.image_url}
+        alt="Pa"
+      />
       <CardContent>
         <Typography
           component="h3"
