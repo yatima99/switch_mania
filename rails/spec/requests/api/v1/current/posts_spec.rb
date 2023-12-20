@@ -12,7 +12,7 @@ RSpec.describe "Api::V1::Current::Posts", type: :request do
         expect { subject }.to change { current_user.posts.count }.by(1)
         expect(current_user.posts.last).to be_unsaved
         res = JSON.parse(response.body)
-        expect(res.keys).to eq ["id", "title", "content", "status", "created_at", "user"]
+        expect(res.keys).to eq ["id", "title", "content", "status", "created_at", "image", "audio", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
@@ -24,7 +24,7 @@ RSpec.describe "Api::V1::Current::Posts", type: :request do
       it "未保存ステータスの記事が新規作成される" do
         expect { subject }.not_to change { current_user.posts.count }
         res = JSON.parse(response.body)
-        expect(res.keys).to eq ["id", "title", "content", "status", "created_at", "user"]
+        expect(res.keys).to eq ["id", "title", "content", "status", "created_at", "image", "audio", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
@@ -48,7 +48,7 @@ RSpec.describe "Api::V1::Current::Posts", type: :request do
           change { current_user_post.reload.content }.from("テスト本文1").to("テスト本文2") and
           change { current_user_post.reload.status }.from("draft").to("published")
         res = JSON.parse(response.body)
-        expect(res.keys).to eq ["id", "title", "content", "status", "created_at", "user"]
+        expect(res.keys).to eq ["id", "title", "content", "status", "created_at", "image", "audio", "user"]
         expect(res["user"].keys).to eq ["name"]
         expect(response).to have_http_status(:ok)
       end
