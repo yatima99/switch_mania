@@ -1,7 +1,9 @@
 import ArticleIcon from '@mui/icons-material/Article'
+import FavoriteIcon from '@mui/icons-material/Favorite'
 import Logout from '@mui/icons-material/Logout'
 import PersonIcon from '@mui/icons-material/Person'
 import SearchIcon from '@mui/icons-material/Search'
+import SettingsIcon from '@mui/icons-material/Settings'
 import {
   AppBar,
   Avatar,
@@ -15,12 +17,12 @@ import {
   ListItemIcon,
   Typography,
 } from '@mui/material'
-
 import InputBase from '@mui/material/InputBase'
 import Paper from '@mui/material/Paper'
+import axios, { AxiosResponse, AxiosError } from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
-
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useUserState } from '@/hooks/useGlobalState'
 
@@ -28,12 +30,35 @@ const Header = () => {
   const [user] = useUserState()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const router = useRouter()
+
+  const hideHeaderPathnames = ['/current/posts/edit/[id]']
+  if (hideHeaderPathnames.includes(router.pathname)) return <></>
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const addNewPost = () => {
+    const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/posts'
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'access-token': localStorage.getItem('access-token'),
+      client: localStorage.getItem('client'),
+      uid: localStorage.getItem('uid'),
+    }
+
+    axios({ method: 'POST', url: url, headers: headers })
+      .then((res: AxiosResponse) => {
+        router.push('/current/posts/edit/' + res.data.id)
+      })
+      .catch((e: AxiosError<{ error: string }>) => {
+        console.log(e.message)
+      })
   }
 
   return (
@@ -134,6 +159,7 @@ const Header = () => {
                         width: 100,
                         boxShadow: 'none',
                       }}
+                      onClick={addNewPost}
                     >
                       Add new
                     </Button>
@@ -151,11 +177,25 @@ const Header = () => {
                       </Typography>
                     </Box>
                     <Divider />
+                    <Link href="/current/posts">
+                      <MenuItem>
+                        <ListItemIcon>
+                          <ArticleIcon fontSize="small" />
+                        </ListItemIcon>
+                        投稿の管理
+                      </MenuItem>
+                    </Link>
                     <MenuItem>
                       <ListItemIcon>
-                        <ArticleIcon fontSize="small" />
+                        <FavoriteIcon fontSize="small" />
                       </ListItemIcon>
-                      投稿の管理
+                      いいねの管理
+                    </MenuItem>
+                    <MenuItem>
+                      <ListItemIcon>
+                        <SettingsIcon fontSize="small" />
+                      </ListItemIcon>
+                      設定
                     </MenuItem>
                     <Link href="/sign_out">
                       <MenuItem>
