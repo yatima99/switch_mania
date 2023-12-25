@@ -12,11 +12,11 @@ RSpec.describe "Api::V1::Posts", type: :request do
     context "page を params で送信しない時" do
       let(:params) { nil }
 
-      it "1ページ目のレコード10件取得できる" do
+      it "1ページ目のレコード12件取得できる" do
         subject
         res = JSON.parse(response.body)
         expect(res.keys).to eq ["posts", "meta"]
-        expect(res["posts"].length).to eq 10
+        expect(res["posts"].length).to eq 12
         expect(res["posts"][0].keys).to eq ["id", "title", "content", "status", "created_at", "image", "audio", "user"]
         expect(res["posts"][0]["user"].keys).to eq ["name"]
         expect(res["meta"].keys).to eq ["current_page", "total_pages"]
@@ -29,11 +29,11 @@ RSpec.describe "Api::V1::Posts", type: :request do
     context "page を params で送信した時" do
       let(:params) { { page: 2 } }
 
-      it "該当ページ目のレコード10件取得できる" do
+      it "該当ページ目のレコード12件取得できる" do
         subject
         res = JSON.parse(response.body)
         expect(res.keys).to eq ["posts", "meta"]
-        expect(res["posts"].length).to eq 10
+        expect(res["posts"].length).to eq 12
         expect(res["posts"][0].keys).to eq ["id", "title", "content", "status", "created_at", "image", "audio", "user"]
         expect(res["posts"][0]["user"].keys).to eq ["name"]
         expect(res["meta"].keys).to eq ["current_page", "total_pages"]

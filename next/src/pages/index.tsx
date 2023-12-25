@@ -43,7 +43,7 @@ const Index: NextPage = () => {
       <Container maxWidth="md" sx={{ pt: 6 }}>
         <Grid container spacing={4}>
           {posts.map((post: PostProps, i: number) => (
-            <Grid key={i} item xs={12} md={6}>
+            <Grid key={i} item xs={6} md={4}>
               <Link href={'/posts/' + post.id}>
                 <PostCard
                   title={post.title}
