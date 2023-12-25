@@ -31,7 +31,6 @@ const PostCard = (props: PostCardProps) => {
         >
           {omit(props.title)(45)('...')}
         </Typography>
-        <Box></Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography sx={{ fontSize: 12 }}>{props.userName}</Typography>
         </Box>

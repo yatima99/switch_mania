@@ -2,7 +2,7 @@ class Api::V1::PostsController < Api::V1::BaseController
   include Pagination
 
   def index
-    posts = Post.published.order(created_at: :desc).page(params[:page] || 1).per(10).includes(:user)
+    posts = Post.published.order(created_at: :desc).page(params[:page] || 1).per(12).includes(:user)
     render json: posts, meta: pagination(posts), adapter: :json
   end
 
