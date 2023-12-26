@@ -39,7 +39,7 @@ const Index: NextPage = () => {
   }
 
   return (
-    <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#e6f2ff' }}>
+    <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#f5f5f5' }}>
       <Container maxWidth="md" sx={{ pt: 6 }}>
         <Grid container spacing={4}>
           {posts.map((post: PostProps, i: number) => (

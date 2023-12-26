@@ -162,12 +162,12 @@ const CurrentPostsEdit: NextPage = () => {
     <Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
-      sx={{ backgroundColor: '#EDF2F7', minHeight: '100vh' }}
+      sx={{ backgroundColor: '#f5f5f5', minHeight: '100vh' }}
     >
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: '#EDF2F7',
+          backgroundColor: '#f5f5f5',
         }}
       >
         <Toolbar

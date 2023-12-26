@@ -155,13 +155,14 @@ const Header = () => {
                         color: 'white',
                         textTransform: 'none',
                         fontSize: 16,
+                        fontWeight: 'bold',
                         borderRadius: 2,
                         width: 100,
                         boxShadow: 'none',
                       }}
                       onClick={addNewPost}
                     >
-                      Add new
+                      投稿する
                     </Button>
                   </Box>
                   <Menu
