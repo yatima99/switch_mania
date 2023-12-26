@@ -22,6 +22,11 @@ class Api::V1::Current::PostsController < Api::V1::BaseController
     render json: post
   end
 
+  def liked_posts
+    liked_posts = current_user.liked_posts.order(created_at: :desc)
+    render json: liked_posts
+  end
+
   private
 
     def post_params
