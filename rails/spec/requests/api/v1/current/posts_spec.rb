@@ -63,4 +63,18 @@ RSpec.describe "Api::V1::Current::Posts", type: :request do
       end
     end
   end
+
+  describe "DELETE /api/v1/current/posts/:id" do
+    subject { delete(api_v1_current_post_path(post), headers:) }
+
+    let(:current_user) { create(:user) }
+    let(:post) { create(:post, user: current_user) }
+    let(:headers) { current_user.create_new_auth_token }
+
+    it "正常に投稿を削除できる" do
+      post
+      expect { subject }.to change { Post.count }.by(-1)
+      expect(response).to have_http_status(:no_content)
+    end
+  end
 end
