@@ -25,7 +25,7 @@ class Api::V1::Current::PostsController < Api::V1::BaseController
   def destroy
     post = current_user.posts.find(params[:id])
     post.destroy!
-    head :ok
+    head :no_content
   end
 
   def liked_posts
