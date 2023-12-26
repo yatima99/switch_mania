@@ -1,5 +1,6 @@
 class Post < ApplicationRecord
   belongs_to :user
+  has_many :likes, dependent: :destroy
   mount_uploader :image, ImageUploader
   mount_uploader :audio, AudioUploader
   enum :status, { unsaved: 10, draft: 20, published: 30 }, _prefix: true

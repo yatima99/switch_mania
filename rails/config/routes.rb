@@ -7,7 +7,13 @@ Rails.application.routes.draw do
 
       namespace :current do
         resource :user, only: [:show]
-        resources :posts, only: [:index, :show, :create, :update]
+        resources :posts, only: [:index, :show, :create, :update] do
+          resources :likes, only: [:create]
+        end
+
+        get "liked_posts", to: "posts#liked_posts"
+
+        resources :likes, only: [:destroy]
       end
       resources :posts, only: [:index, :show]
     end
