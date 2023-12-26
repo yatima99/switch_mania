@@ -22,6 +22,12 @@ class Api::V1::Current::PostsController < Api::V1::BaseController
     render json: post
   end
 
+  def destroy
+    post = current_user.posts.find(params[:id])
+    post.destroy!
+    head :ok
+  end
+
   def liked_posts
     liked_posts = current_user.liked_posts.order(created_at: :desc)
     render json: liked_posts
