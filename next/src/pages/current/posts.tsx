@@ -1,4 +1,3 @@
-import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import {
   Avatar,
@@ -12,16 +11,17 @@ import {
   Card,
 } from '@mui/material'
 import CardMedia from '@mui/material/CardMedia'
+import axios from 'axios'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
+import DeleteDialog from '@/components/DeleteDialog'
 import Error from '@/components/Error'
 import Loading from '@/components/Loading'
-import { useUserState } from '@/hooks/useGlobalState'
+import { useUserState, useSnackbarState } from '@/hooks/useGlobalState'
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn'
 import { styles } from '@/styles'
 import { fetcher } from '@/utils'
-
 type PostProps = {
   id: number
   title: string
@@ -34,6 +34,7 @@ type PostProps = {
 const CurrentPosts: NextPage = () => {
   useRequireSignedIn()
   const [user] = useUserState()
+  const [, setSnackbar] = useSnackbarState()
 
   const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/current/posts'
   const { data, error } = useSWR(user.isSignedIn ? url : null, fetcher)
@@ -42,6 +43,32 @@ const CurrentPosts: NextPage = () => {
   if (!data) return <Loading />
 
   const posts: PostProps[] = camelcaseKeys(data)
+
+  const handleDeletePost = async (postId: number) => {
+    try {
+      const deleteUrl =
+        process.env.NEXT_PUBLIC_API_BASE_URL + '/current/posts/' + postId
+
+      const headers = {
+        'access-token': localStorage.getItem('access-token'),
+        client: localStorage.getItem('client'),
+        uid: localStorage.getItem('uid'),
+      }
+      await axios.delete(deleteUrl, { headers: headers })
+      mutate(url)
+      setSnackbar({
+        message: '削除しました',
+        severity: 'success',
+        pathname: '/current/posts',
+      })
+    } catch (error) {
+      setSnackbar({
+        message: '削除に失敗しました',
+        severity: 'error',
+        pathname: '/current/posts',
+      })
+    }
+  }
 
   return (
     <Box
@@ -146,11 +173,7 @@ const CurrentPosts: NextPage = () => {
                 </Box>
                 <Box>
                   <Avatar>
-                    <Tooltip title="削除する">
-                      <IconButton sx={{ backgroundColor: '#F1F5FA' }}>
-                        <DeleteIcon sx={{ color: '#99AAB6' }} />
-                      </IconButton>
-                    </Tooltip>
+                    <DeleteDialog onConfirm={() => handleDeletePost(post.id)} />
                   </Avatar>
                 </Box>
               </Box>

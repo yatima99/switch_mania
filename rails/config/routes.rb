@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
       namespace :current do
         resource :user, only: [:show]
-        resources :posts, only: [:index, :show, :create, :update] do
+        resources :posts do
           resources :likes, only: [:create]
         end
 
