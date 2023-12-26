@@ -8,7 +8,7 @@ class Api::V1::Current::LikesController < Api::V1::BaseController
   end
 
   def destroy
-    like = current_user.likes.find_by!(post_id: params[:id])
+    like = current_user.likes.find(params[:id])
     like.destroy!
     head :no_content
   end
