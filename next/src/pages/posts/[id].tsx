@@ -45,7 +45,7 @@ const PostDetail: NextPage = () => {
   return (
     <Box
       sx={{
-        backgroundColor: '#EDF2F7',
+        backgroundColor: '#f5f5f5',
         pb: 6,
         minHeight: 'calc(100vh - 57px)',
       }}
@@ -169,7 +169,7 @@ const PostDetail: NextPage = () => {
                     </Box>
                   </Box>
                 </ListItem>
-                <ListItem divider>
+                <ListItem>
                   <Box
                     sx={{
                       display: 'flex',

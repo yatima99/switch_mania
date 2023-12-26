@@ -71,7 +71,7 @@ const SignIn: NextPage = () => {
   return (
     <Box
       sx={{
-        backgroundColor: '#EDF2F7',
+        backgroundColor: '#f5f5f5',
         minHeight: 'calc(100vh - 57px)',
       }}
     >

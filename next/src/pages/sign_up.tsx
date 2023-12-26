@@ -87,7 +87,7 @@ const SignUp: NextPage = () => {
     <Box
       css={styles.pageMinHeight}
       sx={{
-        backgroundColor: '#EDF2F7',
+        backgroundColor: '#f5f5f5',
       }}
     >
       <Container maxWidth="sm">
