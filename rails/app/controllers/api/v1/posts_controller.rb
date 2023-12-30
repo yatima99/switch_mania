@@ -8,6 +8,14 @@ class Api::V1::PostsController < Api::V1::BaseController
 
   def show
     post = Post.published.find(params[:id])
-    render json: post
+
+    if user_signed_in?
+      like = current_user.likes.find_by(post_id: post.id)
+      liked_by_current_user = like.present?
+      like_id = like&.id
+      render json: post, serializer: PostSerializer, additional_info: { liked: liked_by_current_user, like_id: }
+    else
+      render json: post
+    end
   end
 end

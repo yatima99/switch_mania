@@ -186,12 +186,14 @@ const Header = () => {
                         投稿の管理
                       </MenuItem>
                     </Link>
-                    <MenuItem>
-                      <ListItemIcon>
-                        <FavoriteIcon fontSize="small" />
-                      </ListItemIcon>
-                      いいねの管理
-                    </MenuItem>
+                    <Link href="/current/liked_posts">
+                      <MenuItem>
+                        <ListItemIcon>
+                          <FavoriteIcon fontSize="small" />
+                        </ListItemIcon>
+                        いいねの管理
+                      </MenuItem>
+                    </Link>
                     <MenuItem>
                       <ListItemIcon>
                         <SettingsIcon fontSize="small" />

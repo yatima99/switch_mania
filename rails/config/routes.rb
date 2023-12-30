@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       namespace :current do
         resource :user, only: [:show]
         resources :posts do
-          resources :likes, only: [:create]
+          resource :likes, only: [:create]
         end
 
         get "liked_posts", to: "posts#liked_posts"

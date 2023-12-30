@@ -7,6 +7,10 @@ class Post < ApplicationRecord
   validates :title, :content, presence: true, if: :published?
   validate :verify_only_one_unsaved_status_is_allowed
 
+  def liked_by?(user)
+    likes.where(user:).exists?
+  end
+
   private
 
     def verify_only_one_unsaved_status_is_allowed
