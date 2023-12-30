@@ -4,7 +4,11 @@ class Api::V1::Current::LikesController < Api::V1::BaseController
   def create
     post = Post.find(params[:post_id])
     like = current_user.likes.create!(post:)
-    render json: like, status: :created
+    if like.persisted?
+      render json: { id: like.id, status: "created" }, status: :created
+    else
+      render json: { error: like.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
