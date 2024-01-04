@@ -2,12 +2,12 @@ class Api::V1::Current::PostsController < Api::V1::BaseController
   before_action :authenticate_user!
 
   def index
-    posts = current_user.posts.not_unsaved.order(created_at: :desc)
+    posts = current_user.posts.includes(:tags).not_unsaved.order(created_at: :desc)
     render json: posts
   end
 
   def show
-    post = Post.find(params[:id])
+    post = Post.includes(:tags).find(params[:id])
     like = current_user.likes.find_by(post_id: post.id)
     liked_by_current_user = like.present?
     like_id = like&.id
@@ -21,7 +21,18 @@ class Api::V1::Current::PostsController < Api::V1::BaseController
 
   def update
     post = current_user.posts.find(params[:id])
-    post.update!(post_params)
+    post.update!(post_params.except(:tags))
+
+    if params[:post][:tags].blank?
+
+      post.tags.clear
+    else
+      new_tags = params[:post][:tags].split(" ").uniq
+      new_tag_objects = new_tags.map {|tag_name| Tag.find_or_create_by(name: tag_name) }
+
+      post.tags = new_tag_objects
+    end
+
     render json: post
   end
 
@@ -39,6 +50,6 @@ class Api::V1::Current::PostsController < Api::V1::BaseController
   private
 
     def post_params
-      params.require(:post).permit(:title, :content, :status, :image, :audio)
+      params.require(:post).permit(:title, :content, :status, :image, :audio, :tags)
     end
 end

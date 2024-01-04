@@ -9,6 +9,7 @@ import {
   TextField,
   Toolbar,
   Typography,
+  Chip,
 } from '@mui/material'
 import axios, { AxiosError } from 'axios'
 import type { NextPage } from 'next'
@@ -30,12 +31,14 @@ type PostProps = {
   content: string
   image: File | null
   status: string
+  tags: string[]
 }
 
 type PostFormData = {
   title: string
   content: string
   image: File | null
+  tags: string[]
 }
 
 const CurrentPostsEdit: NextPage = () => {
@@ -48,6 +51,8 @@ const CurrentPostsEdit: NextPage = () => {
   const [isFetched, setIsFetched] = useState<boolean>(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [tags, setTags] = useState<Tag[]>([])
+  const [inputValue, setInputValue] = useState('')
   const handleChangeStatusChecked = () => {
     setStatusChecked(!statusChecked)
   }
@@ -66,6 +71,7 @@ const CurrentPostsEdit: NextPage = () => {
         content: '',
         status: false,
         image: null,
+        tags: [],
       }
     }
     return {
@@ -73,6 +79,7 @@ const CurrentPostsEdit: NextPage = () => {
       content: data.content == null ? '' : data.content,
       status: data.status,
       image: data.image,
+      tags: data.tags || [],
     }
   }, [data])
 
@@ -84,6 +91,15 @@ const CurrentPostsEdit: NextPage = () => {
     if (data) {
       reset(post)
       setStatusChecked(post.status == '公開中')
+
+      if (data.tags) {
+        const formattedTags = data.tags.map((tag, index) => ({
+          id: index.toString(),
+          text: tag.name,
+        }))
+        setTags(formattedTags)
+      }
+
       setIsFetched(true)
     }
   }, [data, post, reset])
@@ -96,6 +112,23 @@ const CurrentPostsEdit: NextPage = () => {
   }, [])
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop })
+
+  const handleDelete = (tagToDelete: { id: string; text: string }) => {
+    setTags(tags.filter((tag) => tag.id !== tagToDelete.id))
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && inputValue) {
+      event.preventDefault()
+      if (!tags.some((tag) => tag.text === inputValue)) {
+        setTags((prevTags) => [
+          ...prevTags,
+          { id: Date.now().toString(), text: inputValue },
+        ])
+      }
+      setInputValue('')
+    }
+  }
 
   const onSubmit: SubmitHandler<PostFormData> = (data) => {
     if (data.title == '') {
@@ -127,6 +160,7 @@ const CurrentPostsEdit: NextPage = () => {
     formData.append('post[title]', data.title)
     formData.append('post[content]', data.content)
     formData.append('post[status]', statusChecked ? 'published' : 'draft')
+    formData.append('post[tags]', tags.map((tag) => tag.text).join(' '))
 
     if (imageFile) {
       formData.append('post[image]', imageFile)
@@ -258,6 +292,7 @@ const CurrentPostsEdit: NextPage = () => {
               </div>
             </div>
           </Box>
+
           <Box>
             <h1>説明</h1>
             <Controller
@@ -277,6 +312,27 @@ const CurrentPostsEdit: NextPage = () => {
                 />
               )}
             />
+          </Box>
+          <Box>
+            <TextField
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="タグを入力"
+              variant="outlined"
+              size="small"
+              sx={{ width: 'auto', flexGrow: 1 }}
+            />
+          </Box>
+          <Box>
+            {tags.map((tag, index) => (
+              <Chip
+                key={index}
+                label={tag.text}
+                onDelete={() => handleDelete(tag)}
+                sx={{ margin: 0.5 }}
+              />
+            ))}
           </Box>
         </Box>
       </Container>
