@@ -1,5 +1,6 @@
 class PostSerializer < ActiveModel::Serializer
   attributes :id, :title, :content, :status, :created_at, :image, :audio
+  has_many :tags
   attribute :liked, if: -> { additional_info.present? }
   attribute :like_id, if: -> { additional_info.present? }
   belongs_to :user, serializer: UserSerializer
