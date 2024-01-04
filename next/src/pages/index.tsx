@@ -17,6 +17,7 @@ type PostProps = {
   image: {
     url: string
   }
+  tags: string[]
   user: {
     name: string
   }
@@ -49,6 +50,7 @@ const Index: NextPage = () => {
                   title={post.title}
                   userName={post.user.name}
                   image_url={post.image.url}
+                  tags={post.tags}
                 />
               </Link>
             </Grid>
