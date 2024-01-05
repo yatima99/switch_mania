@@ -2,7 +2,7 @@ import ArticleIcon from '@mui/icons-material/Article'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import Logout from '@mui/icons-material/Logout'
 import PersonIcon from '@mui/icons-material/Person'
-import SearchIcon from '@mui/icons-material/Search'
+
 import SettingsIcon from '@mui/icons-material/Settings'
 import {
   AppBar,
@@ -17,8 +17,7 @@ import {
   ListItemIcon,
   Typography,
 } from '@mui/material'
-import InputBase from '@mui/material/InputBase'
-import Paper from '@mui/material/Paper'
+
 import axios, { AxiosResponse, AxiosError } from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -84,24 +83,7 @@ const Header = () => {
               <Image src="/logo.png" width={133} height={40} alt="logo" />
             </Link>
           </Box>
-          <Paper
-            component="form"
-            sx={{
-              p: '2px 4px',
-              display: 'flex',
-              alignItems: 'center',
-              width: 400,
-            }}
-          >
-            <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder="Search"
-              inputProps={{ 'aria-label': 'search google maps' }}
-            />
-          </Paper>
+
           {user.isFetched && (
             <>
               {!user.isSignedIn && (
