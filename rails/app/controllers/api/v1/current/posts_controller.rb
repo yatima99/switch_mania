@@ -7,11 +7,15 @@ class Api::V1::Current::PostsController < Api::V1::BaseController
   end
 
   def show
-    post = Post.includes(:tags).find(params[:id])
+    post = Post.includes(:tags, :comments).find(params[:id])
     like = current_user.likes.find_by(post_id: post.id)
     liked_by_current_user = like.present?
     like_id = like&.id
-    render json: post, serializer: PostSerializer, additional_info: { liked: liked_by_current_user, like_id: }
+
+    render json: post, serializer: PostSerializer, additional_info: {
+      liked: liked_by_current_user,
+      like_id:,
+    }
   end
 
   def create

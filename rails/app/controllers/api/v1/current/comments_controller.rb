@@ -6,7 +6,7 @@ class Api::V1::Current::CommentsController < Api::V1::BaseController
     comment = current_user.comments.create!(comment_params.merge(post:))
 
     if comment.persisted?
-      render json: { id: comment.id, content: comment.content, status: "created" }, status: :created
+      render json: comment, serializer: CommentSerializer, status: :created
     else
       render json: { error: comment.errors.full_messages }, status: :unprocessable_entity
     end

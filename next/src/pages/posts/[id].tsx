@@ -10,6 +10,8 @@ import {
   List,
   ListItem,
   ListItemText,
+  TextField,
+  Button,
 } from '@mui/material'
 import CardMedia from '@mui/material/CardMedia'
 import IconButton from '@mui/material/IconButton'
@@ -18,11 +20,21 @@ import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
+import CommentCard from '@/components/CommentCard'
 import Error from '@/components/Error'
 import Loading from '@/components/Loading'
 import { useSnackbarState, useUserState } from '@/hooks/useGlobalState'
 import { fetcher } from '@/utils'
+
+type CommentProps = {
+  id: number
+  user: {
+    name: string
+  }
+  content: string
+  created_at: string
+}
 
 type PostProps = {
   id: number
@@ -36,6 +48,7 @@ type PostProps = {
   user: {
     name: string
   }
+  comments: CommentProps[]
 
   like_id: number
   liked: boolean
@@ -47,20 +60,25 @@ const PostDetail: NextPage = () => {
   const router = useRouter()
   const url = process.env.NEXT_PUBLIC_API_BASE_URL + '/posts/'
   const { id } = router.query
+  const { data, error } = useSWR(id ? url + id : null, fetcher)
+
   const [liked, setLiked] = useState(false)
   const [likeId, setLikeId] = useState<number | null>(null)
-  const { data, error } = useSWR(id ? url + id : null, fetcher)
+  const [commentText, setCommentText] = useState('')
+  const [comments, setComments] = useState<CommentProps[]>([])
 
   useEffect(() => {
     if (data) {
       setLiked(data.liked)
       setLikeId(data.like_id)
+      setComments(data.comments || [])
+      console.log(data.comments)
     }
   }, [data])
 
   if (error) return <Error />
   if (!data) return <Loading />
-  const post: PostProps = camelcaseKeys(data)
+  const post: PostProps = camelcaseKeys(data, { deep: true })
 
   const isLoggedIn = () => {
     return user && user.isSignedIn
@@ -99,6 +117,85 @@ const PostDetail: NextPage = () => {
       console.error(err)
       setSnackbar({
         message: '操作に失敗しました',
+        severity: 'error',
+        pathname: '/posts/[id]',
+      })
+    }
+  }
+  const postCommentUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/current/posts/${post.id}/comments`
+
+  const handleCommentSubmit = async () => {
+    if (!commentText.trim()) {
+      return
+    }
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'access-token': localStorage.getItem('access-token'),
+      client: localStorage.getItem('client'),
+      uid: localStorage.getItem('uid'),
+    }
+
+    try {
+      const response = await axios.post(
+        postCommentUrl,
+        { comment: { content: commentText } },
+        { headers: headers },
+      )
+
+      if (response.data && response.data.id) {
+        setComments((prevComments) => [
+          ...prevComments,
+          {
+            id: response.data.id,
+            user: { name: user.name },
+            content: commentText,
+            created_at: response.data.created_at,
+          },
+        ])
+      }
+      console.log(response.data)
+
+      setSnackbar({
+        message: 'コメントを投稿しました',
+        severity: 'success',
+        pathname: '/posts/[id]',
+      })
+      mutate(postCommentUrl, true)
+      setCommentText('')
+    } catch (err) {
+      console.error(err)
+      setSnackbar({
+        message: 'コメントの投稿に失敗しました',
+        severity: 'error',
+        pathname: '/posts/[id]',
+      })
+    }
+  }
+
+  const handleCommentDelete = async (postId, commentId) => {
+    const headers = {
+      'Content-Type': 'application/json',
+      'access-token': localStorage.getItem('access-token'),
+      client: localStorage.getItem('client'),
+      uid: localStorage.getItem('uid'),
+    }
+
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/current/posts/${postId}/comments/${commentId}`,
+        { headers },
+      )
+      setComments(comments.filter((comment) => comment.id !== commentId))
+      setSnackbar({
+        message: 'コメントを削除しました',
+        severity: 'success',
+        pathname: '/posts/[id]',
+      })
+    } catch (error) {
+      console.error(error)
+      setSnackbar({
+        message: 'コメントの削除に失敗しました',
         severity: 'error',
         pathname: '/posts/[id]',
       })
@@ -202,14 +299,44 @@ const PostDetail: NextPage = () => {
                 {post.content}
               </Box>
             </Card>
+
+            <Box
+              sx={{
+                padding: { xs: '0 24px 24px 24px', sm: '0 40px 40px 40px' },
+                marginTop: { xs: '24px', sm: '40px' },
+              }}
+            >
+              {comments.map((comment) => (
+                <Card key={comment.id} variant="outlined">
+                  <CommentCard
+                    content={comment.content}
+                    userName={comment.user.name}
+                    createdAt={comment.created_at}
+                    onDelete={() => handleCommentDelete(post.id, comment.id)}
+                    showDeleteButton={user && user.name === comment.user.name}
+                  />
+                </Card>
+              ))}
+            </Box>
+
             {isLoggedIn() && (
-              <IconButton onClick={handleLikeClick}>
-                {liked ? (
-                  <FavoriteIcon style={{ color: 'red' }} />
-                ) : (
-                  <FavoriteBorderIcon />
-                )}
-              </IconButton>
+              <Box sx={{ my: 4 }}>
+                <TextField
+                  fullWidth
+                  label="コメント"
+                  variant="outlined"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleCommentSubmit}
+                  sx={{ mt: 2 }}
+                >
+                  コメントを投稿
+                </Button>
+              </Box>
             )}
           </Box>
           <Box
@@ -263,6 +390,16 @@ const PostDetail: NextPage = () => {
                 </ListItem>
               </List>
             </Card>
+            <Box>
+              いいねする
+              <IconButton onClick={handleLikeClick}>
+                {liked ? (
+                  <FavoriteIcon style={{ color: 'red' }} />
+                ) : (
+                  <FavoriteBorderIcon />
+                )}
+              </IconButton>
+            </Box>
           </Box>
         </Box>
       </Container>
