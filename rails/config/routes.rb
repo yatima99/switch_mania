@@ -11,6 +11,7 @@ Rails.application.routes.draw do
         resource :user, only: [:show]
         resources :posts do
           resource :likes, only: [:create]
+          resources :comments, only: [:create, :destroy]
         end
 
         get "liked_posts", to: "posts#liked_posts"
