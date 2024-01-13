@@ -357,6 +357,7 @@ DEPENDENCIES
   faker
   kaminari
   letter_opener_web
+  mini_magick
   mysql2 (~> 0.5)
   pry-byebug
   pry-doc
@@ -375,4 +376,4 @@ RUBY VERSION
    ruby 3.1.2p20
 
 BUNDLED WITH
-   2.4.20
+   2.5.4
