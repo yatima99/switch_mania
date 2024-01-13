@@ -45,6 +45,9 @@ type PostProps = {
   image: {
     url: string
   }
+  audio: {
+    url: string
+  }
   user: {
     name: string
   }
@@ -282,6 +285,16 @@ const PostDetail: NextPage = () => {
                 }}
               ></Box>
             </Card>
+
+            {post.audio && post.audio.url && (
+              <Box sx={{ my: 4, maxWidth: 840, m: 'auto' }}>
+                <audio controls>
+                  <source src={post.audio.url} type="audio/mpeg" />
+                  お使いのブラウザはオーディオタグをサポートしていません。
+                </audio>
+              </Box>
+            )}
+
             <Card
               sx={{
                 boxShadow: 'none',
