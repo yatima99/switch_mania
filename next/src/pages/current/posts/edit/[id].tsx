@@ -30,6 +30,7 @@ type PostProps = {
   title: string
   content: string
   image: File | null
+  audio: File | null
   status: string
   tags: string[]
 }
@@ -38,6 +39,7 @@ type PostFormData = {
   title: string
   content: string
   image: File | null
+  audio: File | null
   tags: string[]
 }
 
@@ -51,6 +53,9 @@ const CurrentPostsEdit: NextPage = () => {
   const [isFetched, setIsFetched] = useState<boolean>(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [audioFile, setAudioFile] = useState<File | null>(null)
+  const [audioPreview, setAudioPreview] = useState<string | null>(null)
+
   const [tags, setTags] = useState<Tag[]>([])
   const [inputValue, setInputValue] = useState('')
   const handleChangeStatusChecked = () => {
@@ -71,6 +76,7 @@ const CurrentPostsEdit: NextPage = () => {
         content: '',
         status: false,
         image: null,
+        audio: null,
         tags: [],
       }
     }
@@ -79,6 +85,7 @@ const CurrentPostsEdit: NextPage = () => {
       content: data.content == null ? '' : data.content,
       status: data.status,
       image: data.image,
+      audio: data.audio,
       tags: data.tags || [],
     }
   }, [data])
@@ -104,14 +111,23 @@ const CurrentPostsEdit: NextPage = () => {
     }
   }, [data, post, reset])
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
+  const onDropImage = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0]
     setImagePreview(URL.createObjectURL(file))
     setImageFile(file)
     console.log(file)
   }, [])
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop })
+  const onDropAudio = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0]
+    setAudioPreview(URL.createObjectURL(file))
+    setAudioFile(file)
+    console.log(file)
+  }, [])
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop: onDropImage })
+  const { getRootProps: getRootPropsAudio, getInputProps: getInputPropsAudio } =
+    useDropzone({ onDrop: onDropAudio })
 
   const handleDelete = (tagToDelete: { id: string; text: string }) => {
     setTags(tags.filter((tag) => tag.id !== tagToDelete.id))
@@ -164,6 +180,10 @@ const CurrentPostsEdit: NextPage = () => {
 
     if (imageFile) {
       formData.append('post[image]', imageFile)
+    }
+
+    if (audioFile) {
+      formData.append('post[audio]', audioFile)
     }
 
     axios({
@@ -287,7 +307,25 @@ const CurrentPostsEdit: NextPage = () => {
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 <p>
-                  ここに画像をドラッグ＆ドロップ、またはクリックしてファイルを選択
+                  ここに画像ファイルをドラッグ＆ドロップ、またはクリックしてファイルを選択
+                </p>
+              </div>
+            </div>
+          </Box>
+          <Box sx={{ mb: 2 }}>
+            <h1>音声ファイル</h1>
+            <div>
+              {audioPreview && (
+                <audio controls>
+                  <source src={audioPreview} type="audio/mpeg" />
+                  お使いのブラウザはオーディオタグをサポートしていません。
+                </audio>
+              )}
+
+              <div {...getRootPropsAudio()}>
+                <input {...getInputPropsAudio()} />
+                <p>
+                  ここに音声ファイルをドラッグ＆ドロップ、またはクリックしてファイルを選択
                 </p>
               </div>
             </div>
