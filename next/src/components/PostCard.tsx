@@ -1,16 +1,16 @@
-import { Box, Card, CardContent, Typography, Chip } from '@mui/material'
+import { Box, Card, CardContent, Typography, Chip, Avatar } from '@mui/material'
 import CardMedia from '@mui/material/CardMedia'
 
 type PostCardProps = {
   title: string
   userName: string
+  avatar_url: string
   image_url: string
   tags: string[]
 }
 
 const omit = (text: string) => (len: number) => (ellipsis: string) =>
   text.length >= len ? text.slice(0, len - ellipsis.length) + ellipsis : text
-
 const PostCard = (props: PostCardProps) => {
   return (
     <Card>
@@ -33,7 +33,15 @@ const PostCard = (props: PostCardProps) => {
         >
           {omit(props.title)(45)('...')}
         </Typography>
-        <Typography sx={{ fontSize: 12 }}>{props.userName}</Typography>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <Avatar
+            src={props.avatar_url}
+            alt="User Avatar"
+            sx={{ width: 30, height: 30, mr: 1 }}
+          />
+          <Typography sx={{ fontSize: 12 }}>{props.userName}</Typography>
+        </Box>
 
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: '8px' }}>
           {props.tags.map((tag, index) => (

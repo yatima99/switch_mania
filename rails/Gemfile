@@ -25,6 +25,9 @@ gem "kaminari"
 # 画像のアップロード
 gem "carrierwave"
 
+# 画像のリサイズ
+gem "mini_magick"
+
 # MySQLに接続する
 gem "mysql2", "~> 0.5"
 
