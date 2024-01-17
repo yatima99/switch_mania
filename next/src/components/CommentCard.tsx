@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography'
 type CommentCardProps = {
   content: string
   userName: string
+  userAvatar: string
   createdAt: string
   onDelete: () => void
   showDeleteButton: boolean
@@ -16,6 +17,7 @@ type CommentCardProps = {
 const CommentCard = ({
   content,
   userName,
+  userAvatar,
   createdAt,
   onDelete,
   showDeleteButton,
@@ -26,11 +28,7 @@ const CommentCard = ({
       sx={{ display: 'flex', flexDirection: 'column', padding: '12px' }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-        <Avatar
-          alt="User Avatar"
-          src="https://via.placeholder.com/40"
-          sx={{ width: 40, height: 40, marginRight: '12px' }}
-        />
+        <Avatar src={userAvatar} alt={userName} sx={{ marginRight: 2 }} />
         <Typography variant="body1" sx={{ fontWeight: 'bold', flexGrow: 1 }}>
           {userName}
         </Typography>

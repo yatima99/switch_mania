@@ -27,10 +27,21 @@ import Loading from '@/components/Loading'
 import { useSnackbarState, useUserState } from '@/hooks/useGlobalState'
 import { fetcher } from '@/utils'
 
+type UserProps = {
+  id: number
+  name: string
+  image: {
+    url: string
+  }
+}
+
 type CommentProps = {
   id: number
   user: {
     name: string
+    image: {
+      url: string
+    }
   }
   content: string
   created_at: string
@@ -45,9 +56,10 @@ type PostProps = {
   image: {
     url: string
   }
-  user: {
-    name: string
+  audio: {
+    url: string
   }
+  user: UserProps
   comments: CommentProps[]
 
   like_id: number
@@ -148,7 +160,7 @@ const PostDetail: NextPage = () => {
           ...prevComments,
           {
             id: response.data.id,
-            user: { name: user.name },
+            user: { name: user.name, image: { url: user.image.url } },
             content: commentText,
             created_at: response.data.created_at,
           },
@@ -282,6 +294,16 @@ const PostDetail: NextPage = () => {
                 }}
               ></Box>
             </Card>
+
+            {post.audio && post.audio.url && (
+              <Box sx={{ my: 4, maxWidth: 840, m: 'auto' }}>
+                <audio controls>
+                  <source src={post.audio.url} type="audio/mpeg" />
+                  お使いのブラウザはオーディオタグをサポートしていません。
+                </audio>
+              </Box>
+            )}
+
             <Card
               sx={{
                 boxShadow: 'none',
@@ -311,6 +333,7 @@ const PostDetail: NextPage = () => {
                   <CommentCard
                     content={comment.content}
                     userName={comment.user.name}
+                    userAvatar={comment.user.image.url}
                     createdAt={comment.created_at}
                     onDelete={() => handleCommentDelete(post.id, comment.id)}
                     showDeleteButton={user && user.name === comment.user.name}
