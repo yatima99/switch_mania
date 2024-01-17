@@ -6,10 +6,8 @@ import {
   Button,
   Avatar,
 } from '@mui/material'
-import axios, { AxiosError } from 'axios'
-import camelcaseKeys from 'camelcase-keys'
+import axios from 'axios'
 import type { NextPage } from 'next'
-import Image from 'next/image'
 import { useEffect, useState, useMemo, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
@@ -34,7 +32,7 @@ type ProfileFormData = {
 
 const ProfileSettings: NextPage = () => {
   useRequireSignedIn()
-  const [user] = useUserState()
+  const [user, setUser] = useUserState()
   const [, setSnackbar] = useSnackbarState()
 
   const [isFetched, setIsFetched] = useState<boolean>(false)
@@ -80,7 +78,7 @@ const ProfileSettings: NextPage = () => {
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop: onDropImage })
 
-  const onSubmit: SubmitHandler<ProfileFormData> = (formData) => {
+  const onSubmit: SubmitHandler<ProfileFormData> = async (formData) => {
     if (formData.name == '') {
       return setSnackbar({
         message: '名前は必須です',
@@ -103,27 +101,28 @@ const ProfileSettings: NextPage = () => {
       data.append('user[image]', imageFile)
     }
 
-    axios({
-      method: 'PATCH',
-      url: patchUrl,
-      data: data,
-      headers: headers,
-    })
-      .then(() => {
-        setSnackbar({
-          message: 'プロフィールを更新しました',
-          severity: 'success',
-          pathname: '/current/profile',
-        })
+    try {
+      const response = await axios.patch(patchUrl, data, { headers })
+      const updatedUser = response.data
+      setUser({
+        ...user,
+        name: updatedUser.name,
+        image: updatedUser.image,
       })
-      .catch((err: AxiosError<{ error: string }>) => {
-        console.log(err.message)
-        setSnackbar({
-          message: 'プロフィールの更新に失敗しました',
-          severity: 'error',
-          pathname: '/current/profile',
-        })
+
+      setSnackbar({
+        message: 'プロフィールを更新しました',
+        severity: 'success',
+        pathname: '/current/profile',
       })
+    } catch (err) {
+      console.error(err)
+      setSnackbar({
+        message: 'プロフィールの更新に失敗しました',
+        severity: 'error',
+        pathname: '/current/profile',
+      })
+    }
   }
 
   if (error) return <Error />
@@ -134,13 +133,13 @@ const ProfileSettings: NextPage = () => {
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
-        sx={{ backgroundColor: '#f5f5f5', minHeight: '100vh' }}
+        sx={{ backgroundColor: 'white', minHeight: '100vh' }}
       >
         <Typography variant="h4">プロフィール設定</Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <div {...getRootProps()} style={{ cursor: 'pointer' }}>
             <input {...getInputProps()} />
-            <Typography variant="body2" sx={{ mt: 1, textAlign: 'center' }}>
+            <Typography variant="body2" sx={{ mt: 1, textAlign: 'left' }}>
               アイコン選択
             </Typography>
             <Avatar
@@ -150,6 +149,9 @@ const ProfileSettings: NextPage = () => {
             />
           </div>
         </Box>
+        <Typography variant="body2" sx={{ mt: 1, textAlign: 'left' }}>
+          ユーザー名
+        </Typography>
         <Controller
           name="name"
           control={control}
@@ -165,6 +167,9 @@ const ProfileSettings: NextPage = () => {
             />
           )}
         />
+        <Typography variant="body2" sx={{ mt: 1, textAlign: 'left' }}>
+          自己紹介
+        </Typography>
         <Controller
           name="bio"
           control={control}
