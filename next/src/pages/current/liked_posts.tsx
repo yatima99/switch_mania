@@ -19,6 +19,12 @@ type PostProps = {
   }
   status: string
   tags: string[]
+  user: {
+    name: string
+    image: {
+      url: string
+    }
+  }
 }
 
 const LikesPosts: NextPage = () => {
@@ -50,6 +56,7 @@ const LikesPosts: NextPage = () => {
                   <PostCard
                     title={post.title}
                     userName={post.user.name}
+                    avatar_url={post.user.image.url}
                     image_url={post.image.url}
                     tags={post.tags}
                   />

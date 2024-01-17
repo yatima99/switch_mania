@@ -15,6 +15,7 @@ class Api::V1::Current::UsersController < Api::V1::BaseController
 end
 
 private
+
   def user_params
     params.require(:user).permit(:name, :email, :bio, :image)
   end

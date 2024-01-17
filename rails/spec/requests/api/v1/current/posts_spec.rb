@@ -13,7 +13,7 @@ RSpec.describe "Api::V1::Current::Posts", type: :request do
         expect(current_user.posts.last).to be_unsaved
         res = JSON.parse(response.body)
         expect(res.keys).to eq ["id", "title", "content", "status", "created_at", "image", "audio", "tags", "comments", "user"]
-        expect(res["user"].keys).to eq ["id", "name", "bio", "image_url"]
+        expect(res["user"].keys).to eq ["id", "name", "bio", "image"]
         expect(response).to have_http_status(:ok)
       end
     end
@@ -25,7 +25,7 @@ RSpec.describe "Api::V1::Current::Posts", type: :request do
         expect { subject }.not_to change { current_user.posts.count }
         res = JSON.parse(response.body)
         expect(res.keys).to eq ["id", "title", "content", "status", "created_at", "image", "audio", "tags", "comments", "user"]
-        expect(res["user"].keys).to eq ["id", "name", "bio", "image_url"]
+        expect(res["user"].keys).to eq ["id", "name", "bio", "image"]
         expect(response).to have_http_status(:ok)
       end
     end
@@ -49,7 +49,7 @@ RSpec.describe "Api::V1::Current::Posts", type: :request do
           change { current_user_post.reload.status }.from("draft").to("published")
         res = JSON.parse(response.body)
         expect(res.keys).to eq ["id", "title", "content", "status", "created_at", "image", "audio", "tags", "comments", "user"]
-        expect(res["user"].keys).to eq ["id", "name", "bio", "image_url"]
+        expect(res["user"].keys).to eq ["id", "name", "bio", "image"]
         expect(response).to have_http_status(:ok)
       end
     end
