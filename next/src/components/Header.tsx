@@ -125,8 +125,8 @@ const Header = () => {
               {user.isSignedIn && (
                 <Box sx={{ display: 'flex' }}>
                   <IconButton onClick={handleClick} sx={{ p: 0 }}>
-                    <Avatar>
-                      <PersonIcon />
+                    <Avatar src={user.image ? user.image.url : undefined}>
+                      {!user.image && <PersonIcon />}
                     </Avatar>
                   </IconButton>
                   <Box sx={{ ml: 2 }}>
@@ -176,12 +176,14 @@ const Header = () => {
                         いいねの管理
                       </MenuItem>
                     </Link>
-                    <MenuItem>
-                      <ListItemIcon>
-                        <SettingsIcon fontSize="small" />
-                      </ListItemIcon>
-                      設定
-                    </MenuItem>
+                    <Link href="/current/profile">
+                      <MenuItem>
+                        <ListItemIcon>
+                          <SettingsIcon fontSize="small" />
+                        </ListItemIcon>
+                        プロフィール設定
+                      </MenuItem>
+                    </Link>
                     <Link href="/sign_out">
                       <MenuItem>
                         <ListItemIcon>
