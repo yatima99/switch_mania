@@ -5,6 +5,7 @@ import { AppProps } from 'next/app'
 import * as React from 'react'
 import '@/styles/destyle.css'
 import CurrentUserFetch from '@/components/CurrentUserFetch'
+import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import Snackbar from '@/components/Snackbar'
 
@@ -29,6 +30,7 @@ export default function MyApp(props: MyAppProps): JSX.Element {
         <Header />
         <Component {...pageProps} />
         <Snackbar />
+        <Footer />
       </ThemeProvider>
     </CacheProvider>
   )
