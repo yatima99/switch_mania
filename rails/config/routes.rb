@@ -15,6 +15,7 @@ Rails.application.routes.draw do
         end
 
         get "liked_posts", to: "posts#liked_posts"
+        get "recommended_posts", to: "posts#recommended_posts"
 
         resources :likes, only: [:destroy]
       end
