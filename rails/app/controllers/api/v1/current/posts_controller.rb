@@ -51,6 +51,18 @@ class Api::V1::Current::PostsController < Api::V1::BaseController
     render json: liked_posts
   end
 
+  def recommended_posts
+    liked_post_ids = current_user.likes.pluck(:post_id)
+    recent_liked_posts = current_user.likes.order(created_at: :desc).limit(10).map(&:post)
+    recent_tags = recent_liked_posts.flat_map(&:tags).uniq
+    recommended_posts = Post.joins(:tags).
+                          where.not(id: liked_post_ids). # すでにいいねした投稿を除外
+                          where(tags: { id: recent_tags.map(&:id) }).
+                          distinct
+
+    render json: recommended_posts
+  end
+
   private
 
     def post_params

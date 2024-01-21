@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material'
 
+import axios from 'axios'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
 import Link from 'next/link'
@@ -17,6 +18,7 @@ import useSWR from 'swr'
 import Error from '@/components/Error'
 import Loading from '@/components/Loading'
 import PostCard from '@/components/PostCard'
+import { useUserState } from '@/hooks/useGlobalState'
 import { styles } from '@/styles'
 
 type PostProps = {
@@ -36,11 +38,13 @@ type PostProps = {
 }
 
 const Index: NextPage = () => {
+  const [user] = useUserState()
   const router = useRouter()
   const page = 'page' in router.query ? Number(router.query.page) : 1
 
   const [tag, setTag] = useState('')
   const [tagOptions, setTagOptions] = useState<string[]>([])
+  const [recommendedPosts, setRecommendedPosts] = useState<PostProps[]>([])
   const tagQuery = router.query.tag
     ? `&tag=${encodeURIComponent(router.query.tag)}`
     : ''
@@ -58,6 +62,30 @@ const Index: NextPage = () => {
     }
   }, [tagsData])
 
+  useEffect(() => {
+    const fetchRecommendedPosts = async () => {
+      try {
+        const headers = {
+          'Content-Type': 'application/json',
+          'access-token': localStorage.getItem('access-token'),
+          client: localStorage.getItem('client'),
+          uid: localStorage.getItem('uid'),
+        }
+
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/current/recommended_posts`,
+          { headers },
+        )
+
+        setRecommendedPosts(camelcaseKeys(response.data))
+      } catch (error) {
+        console.error('Error fetching recommended posts:', error)
+      }
+    }
+
+    fetchRecommendedPosts()
+  }, [])
+
   const { data, error } = useSWR(url, fetcher)
   if (error) return <Error />
   if (!data) return <Loading />
@@ -65,6 +93,10 @@ const Index: NextPage = () => {
 
   const posts = camelcaseKeys(data.posts)
   const meta = camelcaseKeys(data.meta)
+
+  const isLoggedIn = () => {
+    return user && user.isSignedIn
+  }
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     router.push('/?page=' + value)
@@ -104,22 +136,50 @@ const Index: NextPage = () => {
           />
         </Box>
 
+        {isLoggedIn() && recommendedPosts.length > 0 && (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h5" sx={{ mb: 2 }}>
+              おすすめの投稿
+            </Typography>
+            <Grid container spacing={4}>
+              {recommendedPosts.map((post) => (
+                <Grid key={post.id} item xs={6} md={4}>
+                  <Link href={'/posts/' + post.id}>
+                    <PostCard
+                      title={post.title}
+                      userName={post.user.name}
+                      avatar_url={post.user.image.url}
+                      image_url={post.image.url}
+                      tags={post.tags}
+                    />
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )}
+
         {posts.length > 0 ? (
-          <Grid container spacing={4}>
-            {posts.map((post: PostProps) => (
-              <Grid key={post.id} item xs={6} md={4}>
-                <Link href={'/posts/' + post.id}>
-                  <PostCard
-                    title={post.title}
-                    userName={post.user.name}
-                    avatar_url={post.user.image.url}
-                    image_url={post.image.url}
-                    tags={post.tags}
-                  />
-                </Link>
-              </Grid>
-            ))}
-          </Grid>
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h5" sx={{ mb: 2 }}>
+              投稿一覧
+            </Typography>
+            <Grid container spacing={4}>
+              {posts.map((post: PostProps) => (
+                <Grid key={post.id} item xs={6} md={4}>
+                  <Link href={'/posts/' + post.id}>
+                    <PostCard
+                      title={post.title}
+                      userName={post.user.name}
+                      avatar_url={post.user.image.url}
+                      image_url={post.image.url}
+                      tags={post.tags}
+                    />
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         ) : (
           <Box sx={{ textAlign: 'center', py: 4 }}>
             <Typography>検索結果はありません</Typography>
