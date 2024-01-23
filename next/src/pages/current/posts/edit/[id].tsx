@@ -26,13 +26,18 @@ import { useUserState, useSnackbarState } from '@/hooks/useGlobalState'
 import { useRequireSignedIn } from '@/hooks/useRequireSignedIn'
 import { fetcher } from '@/utils'
 
+type Tag = {
+  id: string
+  name: string
+}
+
 type PostProps = {
   title: string
   content: string
   image: File | null
   audio: File | null
   status: string
-  tags: string[]
+  tags: { name: string }[]
 }
 
 type PostFormData = {
@@ -40,7 +45,7 @@ type PostFormData = {
   content: string
   image: File | null
   audio: File | null
-  tags: string[]
+  tags: { name: string }[]
 }
 
 const CurrentPostsEdit: NextPage = () => {
@@ -100,10 +105,12 @@ const CurrentPostsEdit: NextPage = () => {
       setStatusChecked(post.status == '公開中')
 
       if (data.tags) {
-        const formattedTags = data.tags.map((tag, index) => ({
-          id: index.toString(),
-          text: tag.name,
-        }))
+        const formattedTags = data.tags.map(
+          (tag: { name: string }, index: number) => ({
+            id: index.toString(),
+            text: tag.name,
+          }),
+        )
         setTags(formattedTags)
       }
 
@@ -129,17 +136,17 @@ const CurrentPostsEdit: NextPage = () => {
   const { getRootProps: getRootPropsAudio, getInputProps: getInputPropsAudio } =
     useDropzone({ onDrop: onDropAudio })
 
-  const handleDelete = (tagToDelete: { id: string; text: string }) => {
+  const handleDelete = (tagToDelete: Tag) => {
     setTags(tags.filter((tag) => tag.id !== tagToDelete.id))
   }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' && inputValue) {
       event.preventDefault()
-      if (!tags.some((tag) => tag.text === inputValue)) {
+      if (!tags.some((tag) => tag.name === inputValue)) {
         setTags((prevTags) => [
           ...prevTags,
-          { id: Date.now().toString(), text: inputValue },
+          { id: Date.now().toString(), name: inputValue },
         ])
       }
       setInputValue('')
@@ -176,7 +183,7 @@ const CurrentPostsEdit: NextPage = () => {
     formData.append('post[title]', data.title)
     formData.append('post[content]', data.content)
     formData.append('post[status]', statusChecked ? 'published' : 'draft')
-    formData.append('post[tags]', tags.map((tag) => tag.text).join(' '))
+    formData.append('post[tags]', tags.map((tag) => tag.name).join(' '))
 
     if (imageFile) {
       formData.append('post[image]', imageFile)
@@ -366,7 +373,7 @@ const CurrentPostsEdit: NextPage = () => {
             {tags.map((tag, index) => (
               <Chip
                 key={index}
-                label={tag.text}
+                label={tag.name}
                 onDelete={() => handleDelete(tag)}
                 sx={{ margin: 0.5 }}
               />
