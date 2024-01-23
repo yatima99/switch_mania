@@ -6,7 +6,7 @@ type PostCardProps = {
   userName: string
   avatar_url: string
   image_url: string
-  tags: string[]
+  tags: { name: string }[]
 }
 
 const omit = (text: string) => (len: number) => (ellipsis: string) =>

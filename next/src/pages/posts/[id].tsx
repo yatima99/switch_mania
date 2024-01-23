@@ -160,7 +160,10 @@ const PostDetail: NextPage = () => {
           ...prevComments,
           {
             id: response.data.id,
-            user: { name: user.name, image: { url: user.image.url } },
+            user: {
+              name: user.name,
+              image: { url: user.image?.url || '' },
+            },
             content: commentText,
             created_at: response.data.created_at,
           },
@@ -185,7 +188,7 @@ const PostDetail: NextPage = () => {
     }
   }
 
-  const handleCommentDelete = async (postId, commentId) => {
+  const handleCommentDelete = async (postId: number, commentId: number) => {
     const headers = {
       'Content-Type': 'application/json',
       'access-token': localStorage.getItem('access-token'),

@@ -58,6 +58,7 @@ class Api::V1::Current::PostsController < Api::V1::BaseController
     recommended_posts = Post.joins(:tags).
                           where.not(id: liked_post_ids). # すでにいいねした投稿を除外
                           where(tags: { id: recent_tags.map(&:id) }).
+                          includes(:user).
                           distinct
 
     render json: recommended_posts

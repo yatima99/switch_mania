@@ -18,7 +18,7 @@ type PostProps = {
     url: string
   }
   status: string
-  tags: string[]
+  tags: { name: string }[]
   user: {
     name: string
     image: {

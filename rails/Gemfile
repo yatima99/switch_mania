@@ -25,6 +25,8 @@ gem "kaminari"
 # 画像のアップロード
 gem "carrierwave"
 
+gem "fog-aws"
+
 # 画像のリサイズ
 gem "mini_magick"
 

@@ -144,7 +144,7 @@ const ProfileSettings: NextPage = () => {
             </Typography>
             <Avatar
               alt="User Avatar"
-              src={imagePreview}
+              src={imagePreview || undefined}
               sx={{ width: 100, height: 100, mt: 2, mb: 2 }}
             />
           </div>
