@@ -41,6 +41,9 @@ gem "rack-cors"
 # 日本語化
 gem "rails-i18n"
 
+# 環境変数
+gem "dotenv-rails", groups: [:development, :test]
+
 gem "rails", "~> 7.0.4"
 
 # タイムゾーン情報を提供する
