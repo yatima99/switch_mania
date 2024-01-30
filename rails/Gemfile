@@ -31,7 +31,7 @@ gem "fog-aws"
 gem "mini_magick"
 
 # AWS SES(認証メール送信)用
-gem 'aws-sdk-rails'
+gem "aws-sdk-rails"
 
 # MySQLに接続する
 gem "mysql2", "~> 0.5"
