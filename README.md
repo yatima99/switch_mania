@@ -34,13 +34,11 @@ switch maniaでは、キーボードの写真と打鍵音を投稿し、他の�
 * いいね機能
 * 検索機能
 * レコメンド機能
-* 投稿音声解析・ノイズ除去機能
-
-**レコメンド機能、投稿音声解析機能は、MVPまでの期間の問題でどちらか一方にするか迷っています。**
 
 ### その後の機能
 * フォロー機能
 * 投票機能
+* 投稿音声解析・ノイズ除去機能
 
 ## 画面遷移図
 [画面遷移図](https://www.figma.com/file/GR3uhh7ZEvFQkYrkiVLJ80/%E7%84%A1%E9%A1%8C?type=design&node-id=0%3A1&mode=design&t=c1IWaGpkZxpND7u4-1)

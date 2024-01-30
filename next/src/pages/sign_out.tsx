@@ -16,6 +16,7 @@ const SignOut: NextPage = () => {
       email: '',
       isSignedIn: false,
       isFetched: true,
+      image: null,
     })
     setSnackbar({
       message: 'サインアウトしました',

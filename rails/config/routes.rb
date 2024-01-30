@@ -6,7 +6,9 @@ Rails.application.routes.draw do
       resources :tags, only: [:index]
 
       mount_devise_token_auth_for "User", at: "auth"
-
+      namespace :user do
+        resource :confirmations, only: [:update]
+      end
       namespace :current do
         resource :user, only: [:show, :update]
         resources :posts do
