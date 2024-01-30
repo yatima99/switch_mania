@@ -21,6 +21,11 @@ import PostCard from '@/components/PostCard'
 import { useUserState } from '@/hooks/useGlobalState'
 import { styles } from '@/styles'
 
+type Tag = {
+  id: string
+  name: string
+}
+
 type PostProps = {
   id: number
   title: string
@@ -28,7 +33,7 @@ type PostProps = {
   image: {
     url: string
   }
-  tags: string[]
+  tags: { name: string }[]
   user: {
     name: string
     image: {
@@ -45,9 +50,11 @@ const Index: NextPage = () => {
   const [tag, setTag] = useState('')
   const [tagOptions, setTagOptions] = useState<string[]>([])
   const [recommendedPosts, setRecommendedPosts] = useState<PostProps[]>([])
-  const tagQuery = router.query.tag
-    ? `&tag=${encodeURIComponent(router.query.tag)}`
-    : ''
+  const tagQuery = Array.isArray(router.query.tag)
+    ? `&tag=${encodeURIComponent(router.query.tag[0])}`
+    : router.query.tag
+      ? `&tag=${encodeURIComponent(router.query.tag)}`
+      : ''
   const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/?page=${page}${tagQuery}`
   const fetcher = (url: string) => fetch(url).then((res) => res.json())
   const { data: tagsData, error: tagsError } = useSWR(
@@ -57,7 +64,7 @@ const Index: NextPage = () => {
 
   useEffect(() => {
     if (tagsData) {
-      const tagNames = tagsData.map((tag) => tag.name)
+      const tagNames = tagsData.map((tag: Tag) => tag.name)
       setTagOptions(tagNames)
     }
   }, [tagsData])
@@ -124,7 +131,7 @@ const Index: NextPage = () => {
             freeSolo
             options={tagOptions}
             value={tag}
-            onChange={(event, newValue) => setTag(newValue)}
+            onChange={(event, newValue) => setTag(newValue ?? '')}
             renderInput={(params) => (
               <TextField
                 {...params}
