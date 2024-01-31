@@ -12,4 +12,12 @@ class User < ApplicationRecord
   has_many :liked_posts, through: :likes, source: :post
 
   mount_uploader :image, AvatarUploader
+
+  def self.guest
+    find_or_create_by!(email: "guest@example.com") do |user|
+      user.password = SecureRandom.urlsafe_base64
+      user.name = "Guest User"
+      user.confirmed_at = Time.zone.now if user.respond_to?(:confirmed_at)
+    end
+  end
 end
