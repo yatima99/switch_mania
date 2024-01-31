@@ -6,9 +6,13 @@ Rails.application.routes.draw do
       resources :tags, only: [:index]
 
       mount_devise_token_auth_for "User", at: "auth"
+      namespace :auth do
+        post "guest_login", to: "guest_login#create"
+      end
       namespace :user do
         resource :confirmations, only: [:update]
       end
+
       namespace :current do
         resource :user, only: [:show, :update]
         resources :posts do
