@@ -9,8 +9,9 @@ import {
   IconButton,
   Link,
   Card,
+  CardMedia,
 } from '@mui/material'
-import CardMedia from '@mui/material/CardMedia'
+
 import axios from 'axios'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
@@ -25,10 +26,15 @@ import { fetcher } from '@/utils'
 type PostProps = {
   id: number
   title: string
+  content: string
+  createdAt: string
+  status: string
   image: {
     url: string
   }
-  status: string
+  audio: {
+    url: string
+  }
 }
 
 const CurrentPosts: NextPage = () => {
@@ -76,110 +82,125 @@ const CurrentPosts: NextPage = () => {
       sx={{
         borderTop: '0.5px solid #acbcc7',
         pb: 8,
+        backgroundColor: '#E8F5E9',
       }}
     >
       <Container maxWidth="md" sx={{ pt: 6, px: 4 }}>
-        <Box sx={{ mb: 4 }}>
-          <Typography component="h2" sx={{ fontSize: 32, fontWeight: 'bold' }}>
-            投稿の管理
-          </Typography>
-        </Box>
+        <Typography
+          component="h1"
+          sx={{
+            fontSize: '2.0rem',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            mb: 4,
+            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+          }}
+        >
+          投稿の管理
+        </Typography>
 
-        {posts.map((post: PostProps, i: number) => (
-          <>
-            <Box
-              key={i}
+        {posts.map((post, i) => (
+          <Box key={i} sx={{ mb: 2 }}>
+            <Card
               sx={{
                 display: 'flex',
-                justifyContent: 'space-between',
+                flexDirection: { xs: 'column', sm: 'row' },
                 alignItems: 'center',
                 minHeight: 80,
               }}
             >
-              <Card>
-                <CardMedia
-                  component="img"
-                  height="194"
-                  image={post.image.url}
-                  alt="image"
-                />
-              </Card>
-              <Box sx={{ width: 'auto', pr: 3 }}>
-                <Typography
-                  component="h3"
+              <CardMedia
+                component="img"
+                sx={{
+                  width: 194,
+                  height: 194,
+                  mr: { sm: 2 },
+                  mb: { xs: 1, sm: 0 },
+                }}
+                image={post.image.url}
+                alt="Post image"
+              />
+              <Box sx={{ width: 'auto', pr: 3, flexGrow: 1, ml: { sm: 2 } }}>
+                <Box
                   sx={{
-                    fontSize: { xs: 16, sm: 18 },
-                    color: 'black',
-                    fontWeight: 'bold',
+                    display: 'flex',
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    mb: 1,
                   }}
                 >
-                  {post.title}
-                </Typography>
-              </Box>
+                  <Typography
+                    component="h3"
+                    sx={{
+                      fontSize: { xs: 16, sm: 18 },
+                      color: 'black',
+                      fontWeight: 'bold',
+                      mb: 1,
+                    }}
+                  >
+                    {post.title}
+                  </Typography>
 
-              <Box
-                sx={{
-                  minWidth: 180,
-                  width: 180,
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <>
-                  {post.status == '下書き' && (
-                    <Box
-                      sx={{
-                        display: 'inline',
-                        fontSize: 12,
-                        textAlgin: 'center',
-                        border: '1px solid #9FAFBA',
-                        p: '4px',
-                        borderRadius: 1,
-                        color: '#9FAFBA',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {post.status}
-                    </Box>
-                  )}
-                  {post.status == '公開中' && (
-                    <Box
-                      sx={{
-                        display: 'inline',
-                        fontSize: 12,
-                        textAlgin: 'center',
-                        border: '1px solid #3EA8FF',
-                        p: '4px',
-                        borderRadius: 1,
-                        color: '#3EA8FF',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {post.status}
-                    </Box>
-                  )}
-                </>
-                <Box>
-                  <Link href={'/current/posts/edit/' + post.id}>
-                    <Avatar>
+                  <Box
+                    sx={{
+                      fontSize: 12,
+                      border: `1px solid ${
+                        post.status === '下書き' ? '#9FAFBA' : '#3EA8FF'
+                      }`,
+                      p: '4px',
+                      borderRadius: 1,
+                      color: post.status === '下書き' ? '#9FAFBA' : '#3EA8FF',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {post.status}
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    mb: 1,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: { xs: 'column', sm: 'row' },
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: { xs: 1, sm: 0 },
+                    }}
+                  >
+                    <audio controls>
+                      <source src={post.audio.url} type="audio/mpeg" />
+                      お使いのブラウザは音声ファイルをサポートしていません。
+                    </audio>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Link href={'/current/posts/edit/' + post.id}>
                       <Tooltip title="編集する">
                         <IconButton sx={{ backgroundColor: '#F1F5FA' }}>
                           <EditIcon sx={{ color: '#99AAB6' }} />
                         </IconButton>
                       </Tooltip>
+                    </Link>
+                    <Avatar>
+                      <DeleteDialog
+                        onConfirm={() => handleDeletePost(post.id)}
+                      />
                     </Avatar>
-                  </Link>
-                </Box>
-                <Box>
-                  <Avatar>
-                    <DeleteDialog onConfirm={() => handleDeletePost(post.id)} />
-                  </Avatar>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
+            </Card>
+
             <Divider />
-          </>
+          </Box>
         ))}
       </Container>
     </Box>
