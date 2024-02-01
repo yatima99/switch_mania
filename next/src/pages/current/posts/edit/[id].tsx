@@ -156,7 +156,7 @@ const CurrentPostsEdit: NextPage = () => {
   const onSubmit: SubmitHandler<PostFormData> = (data) => {
     if (data.title == '') {
       return setSnackbar({
-        message: '記事の保存にはタイトルが必要です',
+        message: '投稿の保存にはタイトルが必要です',
         severity: 'error',
         pathname: '/current/posts/edit/[id]',
       })
@@ -164,7 +164,7 @@ const CurrentPostsEdit: NextPage = () => {
 
     if (statusChecked && data.content == '') {
       return setSnackbar({
-        message: '本文なしの記事は公開はできません',
+        message: '本文なしの投稿は公開はできません',
         severity: 'error',
         pathname: '/current/posts/edit/[id]',
       })
@@ -188,7 +188,6 @@ const CurrentPostsEdit: NextPage = () => {
     if (imageFile) {
       formData.append('post[image]', imageFile)
     }
-
     if (audioFile) {
       formData.append('post[audio]', audioFile)
     }
@@ -201,7 +200,7 @@ const CurrentPostsEdit: NextPage = () => {
     })
       .then(() => {
         setSnackbar({
-          message: '記事を保存しました',
+          message: '投稿を保存しました',
           severity: 'success',
           pathname: '/current/posts/edit/[id]',
         })
@@ -209,7 +208,7 @@ const CurrentPostsEdit: NextPage = () => {
       .catch((err: AxiosError<{ error: string }>) => {
         console.log(err.message)
         setSnackbar({
-          message: '記事の保存に失敗しました',
+          message: '投稿の保存に失敗しました',
           severity: 'error',
           pathname: '/current/posts/edit/[id]',
         })
@@ -223,12 +222,12 @@ const CurrentPostsEdit: NextPage = () => {
     <Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
-      sx={{ backgroundColor: '#f5f5f5', minHeight: '100vh' }}
+      sx={{ backgroundColor: '#E8F5E9', minHeight: '100vh' }}
     >
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: '#f5f5f5',
+          backgroundColor: '#ffffff',
         }}
       >
         <Toolbar
@@ -311,7 +310,16 @@ const CurrentPostsEdit: NextPage = () => {
                 />
               )}
 
-              <div {...getRootProps()}>
+              <div
+                {...getRootProps()}
+                style={{
+                  border: '2px dashed #cccccc',
+                  padding: '20px',
+                  textAlign: 'center',
+                  marginTop: '10px',
+                  cursor: 'pointer',
+                }}
+              >
                 <input {...getInputProps()} />
                 <p>
                   ここに画像ファイルをドラッグ＆ドロップ、またはクリックしてファイルを選択
@@ -319,6 +327,7 @@ const CurrentPostsEdit: NextPage = () => {
               </div>
             </div>
           </Box>
+
           <Box sx={{ mb: 2 }}>
             <h1>音声ファイル</h1>
             <div>
@@ -328,8 +337,16 @@ const CurrentPostsEdit: NextPage = () => {
                   お使いのブラウザはオーディオタグをサポートしていません。
                 </audio>
               )}
-
-              <div {...getRootPropsAudio()}>
+              <div
+                {...getRootPropsAudio()}
+                style={{
+                  border: '2px dashed #cccccc',
+                  padding: '20px',
+                  textAlign: 'center',
+                  marginTop: '10px',
+                  cursor: 'pointer',
+                }}
+              >
                 <input {...getInputPropsAudio()} />
                 <p>
                   ここに音声ファイルをドラッグ＆ドロップ、またはクリックしてファイルを選択
@@ -369,13 +386,16 @@ const CurrentPostsEdit: NextPage = () => {
               sx={{ width: 'auto', flexGrow: 1 }}
             />
           </Box>
-          <Box>
+          <Typography variant="h6">
+            スイッチの種類をタグに含めてください（例: CherryRed）
+          </Typography>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
             {tags.map((tag, index) => (
               <Chip
                 key={index}
                 label={tag.name}
                 onDelete={() => handleDelete(tag)}
-                sx={{ margin: 0.5 }}
+                color="primary"
               />
             ))}
           </Box>

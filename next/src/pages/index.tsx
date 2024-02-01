@@ -1,3 +1,4 @@
+import SearchIcon from '@mui/icons-material/Search'
 import {
   Box,
   Grid,
@@ -8,6 +9,8 @@ import {
   Typography,
 } from '@mui/material'
 
+import IconButton from '@mui/material/IconButton'
+import InputAdornment from '@mui/material/InputAdornment'
 import axios from 'axios'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
@@ -124,7 +127,7 @@ const Index: NextPage = () => {
   }
 
   return (
-    <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#f5f5f5' }}>
+    <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#E8F5E9' }}>
       <Container maxWidth="md" sx={{ pt: 6 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
           <Autocomplete
@@ -135,8 +138,18 @@ const Index: NextPage = () => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="タグで絞り込み"
+                label="スイッチの種類（タグ）で絞り込み"
                 onKeyDown={handleKeyPress}
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleTagSearch} edge="end">
+                        <SearchIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             )}
             sx={{ flexGrow: 1, mr: 1 }}
@@ -168,10 +181,7 @@ const Index: NextPage = () => {
 
         {posts.length > 0 ? (
           <Box sx={{ mt: 4 }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>
-              投稿一覧
-            </Typography>
-            <Grid container spacing={4}>
+            <Grid container spacing={1}>
               {posts.map((post: PostProps) => (
                 <Grid key={post.id} item xs={6} md={4}>
                   <Link href={'/posts/' + post.id}>
