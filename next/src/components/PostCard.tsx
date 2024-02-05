@@ -13,37 +13,49 @@ const omit = (text: string) => (len: number) => (ellipsis: string) =>
   text.length >= len ? text.slice(0, len - ellipsis.length) + ellipsis : text
 const PostCard = (props: PostCardProps) => {
   return (
-    <Card>
+    <Card sx={{ maxWidth: 545, m: 1, boxShadow: 3 }}>
       <CardMedia
         component="img"
-        height="194"
+        //height="194"
         image={props.image_url}
-        alt="Pa"
+        alt="thumbnail"
+        sx={{
+          width: '100%',
+          height: 'auto',
+          objectFit: 'contain',
+          //maxHeight: '150px',
+        }}
       />
       <CardContent>
         <Typography
           component="h3"
           sx={{
-            mb: 2,
-            minHeight: 48,
+            mb: 1,
             fontSize: 16,
             fontWeight: 'bold',
-            lineHeight: 1.5,
+            lineHeight: 1.3,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
           }}
         >
           {omit(props.title)(45)('...')}
         </Typography>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
           <Avatar
             src={props.avatar_url}
             alt="User Avatar"
-            sx={{ width: 30, height: 30, mr: 1 }}
+            sx={{ width: 24, height: 24, mr: 0.5 }}
           />
-          <Typography sx={{ fontSize: 12 }}>{props.userName}</Typography>
+          <Typography variant="body2" sx={{ fontSize: 12 }}>
+            {props.userName}
+          </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: '8px' }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
           {props.tags.map((tag, index) => (
             <Chip key={index} label={tag.name} size="small" />
           ))}

@@ -220,7 +220,7 @@ const PostDetail: NextPage = () => {
   return (
     <Box
       sx={{
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#E8F5E9',
         pb: 6,
         minHeight: 'calc(100vh - 57px)',
       }}
@@ -234,18 +234,32 @@ const PostDetail: NextPage = () => {
           height: 56,
           pl: 4,
           color: '#6e7b85',
+          justifyContent: 'space-between',
         }}
       >
-        <Box sx={{ pr: 1 }}>
-          <PersonIcon />
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ pr: 1 }}>
+            <PersonIcon />
+          </Box>
+          <Box sx={{ mr: 2 }}>
+            <Typography component="p">投稿者:</Typography>
+          </Box>
+          <Typography component="p" sx={{ fontWeight: 'bold', color: 'black' }}>
+            {post.user.name}
+          </Typography>
         </Box>
-        <Box sx={{ mr: 2 }}>
-          <Typography component="p">投稿者:</Typography>
-        </Box>
-        <Typography component="p" sx={{ fontWeight: 'bold', color: 'black' }}>
-          {post.user.name}
-        </Typography>
+        <IconButton
+          onClick={handleLikeClick}
+          sx={{ marginLeft: 'auto', marginRight: 2 }}
+        >
+          {liked ? (
+            <FavoriteIcon style={{ color: 'red' }} />
+          ) : (
+            <FavoriteBorderIcon />
+          )}
+        </IconButton>
       </Box>
+
       <Container maxWidth="lg">
         <Box sx={{ pt: 6, pb: 3 }}>
           <Box sx={{ maxWidth: 840, m: 'auto', textAlign: 'center' }}>
@@ -259,20 +273,6 @@ const PostDetail: NextPage = () => {
               {post.title}
             </Typography>
           </Box>
-          <Typography
-            component="p"
-            align="center"
-            sx={{
-              display: {
-                xs: 'block',
-                lg: 'none',
-              },
-              color: '#6e7b85',
-              mt: '20px',
-            }}
-          >
-            {post.createdAt}に公開
-          </Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: '0 24px' }}>
           <Box sx={{ width: '100%' }}>
@@ -286,16 +286,10 @@ const PostDetail: NextPage = () => {
             >
               <CardMedia
                 component="img"
-                height="394"
                 image={post.image.url}
-                alt="Pa"
+                alt="thumbnail"
+                sx={{ width: '100%', height: 'auto', objectFit: 'contain' }}
               />
-              <Box
-                sx={{
-                  padding: { xs: '0 24px 24px 24px', sm: '0 40px 40px 40px' },
-                  marginTop: { xs: '24px', sm: '40px' },
-                }}
-              ></Box>
             </Card>
 
             {post.audio && post.audio.url && (
@@ -324,29 +318,51 @@ const PostDetail: NextPage = () => {
                 {post.content}
               </Box>
             </Card>
+            <Typography
+              component="p"
+              align="center"
+              sx={{
+                display: {
+                  xs: 'block',
+                  lg: 'none',
+                },
+                color: '#6e7b85',
+                mt: '20px',
+              }}
+            >
+              {post.createdAt}に公開
+            </Typography>
 
             <Box
               sx={{
-                padding: { xs: '0 24px 24px 24px', sm: '0 40px 40px 40px' },
+                padding: { xs: '0 0px 40x 0px', sm: '0 0px 40px 0px' },
                 marginTop: { xs: '24px', sm: '40px' },
+                maxWidth: 840,
+                m: '0 auto',
               }}
             >
               {comments.map((comment) => (
-                <Card key={comment.id} variant="outlined">
-                  <CommentCard
-                    content={comment.content}
-                    userName={comment.user.name}
-                    userAvatar={comment.user.image.url}
-                    createdAt={comment.created_at}
-                    onDelete={() => handleCommentDelete(post.id, comment.id)}
-                    showDeleteButton={user && user.name === comment.user.name}
-                  />
-                </Card>
+                <CommentCard
+                  key={comment.id}
+                  content={comment.content}
+                  userName={comment.user.name}
+                  userAvatar={comment.user.image.url}
+                  createdAt={comment.created_at}
+                  onDelete={() => handleCommentDelete(post.id, comment.id)}
+                  showDeleteButton={user && user.name === comment.user.name}
+                />
               ))}
             </Box>
 
             {isLoggedIn() && (
-              <Box sx={{ my: 4 }}>
+              <Box
+                sx={{
+                  padding: { xs: '0 0px 40x 0px', sm: '0 0px 40px 0px' },
+                  marginTop: { xs: '24px', sm: '40px' },
+                  maxWidth: 840,
+                  m: '0 auto',
+                }}
+              >
                 <TextField
                   fullWidth
                   label="コメント"
@@ -358,9 +374,9 @@ const PostDetail: NextPage = () => {
                   variant="contained"
                   color="primary"
                   onClick={handleCommentSubmit}
-                  sx={{ mt: 2 }}
+                  sx={{ mt: 2, color: 'white' }}
                 >
-                  コメントを投稿
+                  コメントする
                 </Button>
               </Box>
             )}
@@ -394,7 +410,7 @@ const PostDetail: NextPage = () => {
                     </Box>
                   </Box>
                 </ListItem>
-                <ListItem>
+                <ListItem divider>
                   <Box
                     sx={{
                       display: 'flex',
@@ -414,18 +430,30 @@ const PostDetail: NextPage = () => {
                     </Box>
                   </Box>
                 </ListItem>
+                <ListItem>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: '100%',
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemText primary="いいねする" />
+                    </Box>
+
+                    <IconButton onClick={handleLikeClick}>
+                      {liked ? (
+                        <FavoriteIcon style={{ color: 'red' }} />
+                      ) : (
+                        <FavoriteBorderIcon />
+                      )}
+                    </IconButton>
+                  </Box>
+                </ListItem>
               </List>
             </Card>
-            <Box>
-              いいねする
-              <IconButton onClick={handleLikeClick}>
-                {liked ? (
-                  <FavoriteIcon style={{ color: 'red' }} />
-                ) : (
-                  <FavoriteBorderIcon />
-                )}
-              </IconButton>
-            </Box>
           </Box>
         </Box>
       </Container>

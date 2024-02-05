@@ -41,15 +41,20 @@ const LikesPosts: NextPage = () => {
 
   return (
     <>
-      <Box sx={{ pt: 6, px: 18, backgroundColor: '#ffffff' }}>
-        <Typography component="h2" sx={{ fontSize: 32, fontWeight: 'bold' }}>
-          いいねした投稿一覧
+      <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#FFF0F5' }}>
+        <Typography
+          component="h1"
+          sx={{
+            fontSize: '2.0rem',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+          }}
+        >
+          いいね一覧
         </Typography>
-      </Box>
-
-      <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#f5f5f5' }}>
         <Container maxWidth="md" sx={{ pt: 6 }}>
-          <Grid container spacing={4}>
+          <Grid container spacing={1}>
             {posts.map((post: PostProps, i: number) => (
               <Grid key={i} item xs={6} md={4}>
                 <Link href={'/posts/' + post.id}>
