@@ -16,14 +16,14 @@ const PostCard = (props: PostCardProps) => {
     <Card sx={{ maxWidth: 545, m: 1, boxShadow: 3 }}>
       <CardMedia
         component="img"
-        height="194"
+        //height="194"
         image={props.image_url}
         alt="thumbnail"
         sx={{
           width: '100%',
           height: 'auto',
           objectFit: 'contain',
-          maxHeight: '150px',
+          //maxHeight: '150px',
         }}
       />
       <CardContent>

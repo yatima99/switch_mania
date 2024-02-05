@@ -1,10 +1,9 @@
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
-import DeleteIcon from '@mui/icons-material/Delete'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+import DeleteDialog from '@/components/DeleteDialog'
 
 type CommentCardProps = {
   content: string
@@ -68,13 +67,9 @@ const CommentCard = ({
         </Box>
       </Box>
       {showDeleteButton && (
-        <IconButton
-          onClick={onDelete}
-          color="secondary"
-          sx={{ marginLeft: 'auto', marginRight: '12px' }}
-        >
-          <DeleteIcon />
-        </IconButton>
+        <Avatar>
+          <DeleteDialog onConfirm={() => onDelete()} />
+        </Avatar>
       )}
     </Card>
   )

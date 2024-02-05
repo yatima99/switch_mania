@@ -162,9 +162,17 @@ const CurrentPostsEdit: NextPage = () => {
       })
     }
 
-    if (statusChecked && data.content == '') {
+    if (!audioFile) {
       return setSnackbar({
-        message: '本文なしの投稿は公開はできません',
+        message: '音声ファイルをアップロードしてください',
+        severity: 'error',
+        pathname: '/current/posts/edit/[id]',
+      })
+    }
+
+    if (tags.length === 0) {
+      return setSnackbar({
+        message: '少なくとも1つのタグを追加してください',
         severity: 'error',
         pathname: '/current/posts/edit/[id]',
       })
