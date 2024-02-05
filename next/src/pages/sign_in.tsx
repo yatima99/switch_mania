@@ -68,6 +68,44 @@ const SignIn: NextPage = () => {
       })
   }
 
+  const guestLogin = () => {
+    const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/guest_login`
+    const headers = { 'Content-Type': 'application/json' }
+
+    axios({ method: 'POST', url: url, headers: headers })
+      .then((res: AxiosResponse) => {
+        localStorage.setItem('access-token', res.headers['access-token'])
+        localStorage.setItem('client', res.headers['client'])
+        localStorage.setItem('uid', res.headers['uid'])
+
+        console.log(res.headers['access-token'])
+        console.log(res.headers['client'])
+        console.log(res.headers['uid'])
+
+        setUser({
+          ...user,
+          isFetched: false,
+          isSignedIn: true,
+        })
+
+        setSnackbar({
+          message: 'ゲストとしてログインしました。',
+          severity: 'success',
+          pathname: '/',
+        })
+
+        router.push('/')
+      })
+      .catch((error) => {
+        console.error('ゲストログインに失敗しました。', error)
+        setSnackbar({
+          message: 'ゲストログインに失敗しました。',
+          severity: 'error',
+          pathname: '/',
+        })
+      })
+  }
+
   return (
     <Box
       sx={{
@@ -84,7 +122,7 @@ const SignIn: NextPage = () => {
             Sign in
           </Typography>
         </Box>
-        <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
+        <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={2}>
           <Controller
             name="email"
             control={control}
@@ -122,10 +160,32 @@ const SignIn: NextPage = () => {
           >
             送信
           </Button>
+          <Typography textAlign="center" sx={{ my: 2 }}>
+            または
+          </Typography>
+          <Button
+            variant="outlined"
+            sx={{
+              textTransform: 'none',
+              fontSize: 16,
+              lineHeight: '27px',
+              borderRadius: 2,
+              boxShadow: 'none',
+              border: '1.5px solid #4CAF50',
+              backgroundColor: '#4CAF50',
+              color: 'white',
+              '&:hover': {
+                backgroundColor: '#45a049',
+                borderColor: '#45a049',
+              },
+            }}
+            onClick={guestLogin}
+          >
+            Guest Login
+          </Button>
         </Stack>
       </Container>
     </Box>
   )
 }
-
 export default SignIn
