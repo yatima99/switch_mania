@@ -1,0 +1,47 @@
+{
+  "family": "switch-mania-task-definition-frontend",
+  "containerDefinitions": [
+      {
+          "name": "next",
+          "image": "622131266476.dkr.ecr.ap-northeast-1.amazonaws.com/switch-mania-next:latest",
+          "cpu": 0,
+          "portMappings": [
+              {
+                  "name": "next-80-tcp",
+                  "containerPort": 80,
+                  "hostPort": 80,
+                  "protocol": "tcp",
+                  "appProtocol": "http"
+              }
+          ],
+          "essential": true,
+          "environment": [],
+          "environmentFiles": [],
+          "mountPoints": [],
+          "volumesFrom": [],
+          "ulimits": [],
+          "logConfiguration": {
+              "logDriver": "awslogs",
+              "options": {
+                  "awslogs-create-group": "true",
+                  "awslogs-group": "/ecs/switch-mania-task-definition-frontend",
+                  "awslogs-region": "ap-northeast-1",
+                  "awslogs-stream-prefix": "ecs"
+              },
+              "secretOptions": []
+          }
+      }
+  ],
+  "taskRoleArn": "arn:aws:iam::622131266476:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::622131266476:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+      "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+      "cpuArchitecture": "X86_64",
+      "operatingSystemFamily": "LINUX"
+  }
+}
