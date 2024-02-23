@@ -16,7 +16,7 @@ const PostCard = (props: PostCardProps) => {
   return (
     <Card
       sx={{
-        height: 300,
+        height: 310,
         m: 1,
         boxShadow: 3,
         display: 'flex',
@@ -29,8 +29,9 @@ const PostCard = (props: PostCardProps) => {
         alt="thumbnail"
         sx={{
           width: '100%',
-          height: 180, // 画像の高さを固定
-          objectFit: 'cover',
+          height: 200,
+          objectFit: 'contain',
+          objectPosition: 'center',
         }}
       />
       <CardContent sx={{ flexGrow: 1, overflow: 'hidden' }}>

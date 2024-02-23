@@ -9,6 +9,7 @@ import {
   TextField,
   Toolbar,
   Typography,
+  Autocomplete,
   Chip,
 } from '@mui/material'
 import axios, { AxiosError } from 'axios'
@@ -36,7 +37,7 @@ type PostProps = {
   content: string
   image: File | null
   audio: File | null
-  status: string
+  status: '公開中' | '下書き'
   tags: { name: string }[]
 }
 
@@ -61,8 +62,9 @@ const CurrentPostsEdit: NextPage = () => {
   const [audioFile, setAudioFile] = useState<File | null>(null)
   const [audioPreview, setAudioPreview] = useState<string | null>(null)
 
+  const [allTags, setAllTags] = useState([])
   const [tags, setTags] = useState<Tag[]>([])
-  const [inputValue, setInputValue] = useState('')
+
   const handleChangeStatusChecked = () => {
     setStatusChecked(!statusChecked)
   }
@@ -98,21 +100,35 @@ const CurrentPostsEdit: NextPage = () => {
   const { handleSubmit, control, reset } = useForm<PostFormData>({
     defaultValues: post,
   })
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/tags`,
+        )
+        setAllTags(response.data)
+      } catch (error) {
+        console.error('Failed to fetch tags:', error)
+      }
+    }
+
+    fetchTags()
+  }, [])
 
   useEffect(() => {
+    if (data && data.tags) {
+      const formattedTags = data.tags.map(
+        (tag: { name: string }, index: number) => ({
+          id: index.toString(),
+          name: tag.name,
+        }),
+      )
+      setTags(formattedTags)
+    }
+
     if (data) {
       reset(post)
       setStatusChecked(post.status == '公開中')
-
-      if (data.tags) {
-        const formattedTags = data.tags.map(
-          (tag: { name: string }, index: number) => ({
-            id: index.toString(),
-            text: tag.name,
-          }),
-        )
-        setTags(formattedTags)
-      }
 
       setIsFetched(true)
     }
@@ -136,43 +152,10 @@ const CurrentPostsEdit: NextPage = () => {
   const { getRootProps: getRootPropsAudio, getInputProps: getInputPropsAudio } =
     useDropzone({ onDrop: onDropAudio })
 
-  const handleDelete = (tagToDelete: Tag) => {
-    setTags(tags.filter((tag) => tag.id !== tagToDelete.id))
-  }
-
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' && inputValue) {
-      event.preventDefault()
-      if (!tags.some((tag) => tag.name === inputValue)) {
-        setTags((prevTags) => [
-          ...prevTags,
-          { id: Date.now().toString(), name: inputValue },
-        ])
-      }
-      setInputValue('')
-    }
-  }
-
   const onSubmit: SubmitHandler<PostFormData> = (data) => {
     if (data.title == '') {
       return setSnackbar({
         message: '投稿の保存にはタイトルが必要です',
-        severity: 'error',
-        pathname: '/current/posts/edit/[id]',
-      })
-    }
-
-    if (!audioFile) {
-      return setSnackbar({
-        message: '音声ファイルをアップロードしてください',
-        severity: 'error',
-        pathname: '/current/posts/edit/[id]',
-      })
-    }
-
-    if (tags.length === 0) {
-      return setSnackbar({
-        message: '少なくとも1つのタグを追加してください',
         severity: 'error',
         pathname: '/current/posts/edit/[id]',
       })
@@ -383,29 +366,51 @@ const CurrentPostsEdit: NextPage = () => {
               )}
             />
           </Box>
-          <Box>
-            <TextField
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="タグを入力"
-              variant="outlined"
-              size="small"
-              sx={{ width: 'auto', flexGrow: 1 }}
+          <Box sx={{ mt: 4 }}>
+            <Autocomplete
+              multiple
+              id="tags-filled"
+              options={allTags.map((tag: Tag) => tag.name)}
+              freeSolo
+              filterSelectedOptions
+              value={tags.map((tag) => tag.name)}
+              onChange={(event, newValue) => {
+                const newTags = newValue.map((value) => {
+                  if (typeof value === 'string') {
+                    return { id: Date.now().toString(), name: value }
+                  } else {
+                    return (
+                      allTags.find((tag: Tag) => tag.name === value) || {
+                        id: Date.now().toString(),
+                        name: value,
+                      }
+                    )
+                  }
+                })
+                setTags(newTags)
+              }}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  // eslint-disable-next-line react/jsx-key
+                  <Chip
+                    label={option}
+                    {...getTagProps({ index })}
+                    sx={{
+                      bgcolor: 'limegreen',
+                      color: 'white',
+                    }}
+                  />
+                ))
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="タグを入力"
+                  placeholder="タグを選択、または入力してEnter"
+                />
+              )}
             />
-          </Box>
-          <Typography variant="h6">
-            スイッチの種類をタグに含めてください（例: CherryRed）
-          </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {tags.map((tag, index) => (
-              <Chip
-                key={index}
-                label={tag.name}
-                onDelete={() => handleDelete(tag)}
-                color="primary"
-              />
-            ))}
           </Box>
         </Box>
       </Container>

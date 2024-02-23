@@ -26,6 +26,7 @@ Rails.application.routes.draw do
         resources :likes, only: [:destroy]
       end
       resources :posts, only: [:index, :show]
+      get "tags", to: "tags#index"
     end
   end
 end
