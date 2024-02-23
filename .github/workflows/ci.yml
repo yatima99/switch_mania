@@ -5,9 +5,7 @@ on:
     branches-ignore:
       - "main"
   workflow_call:
-  
-  pull_request:
-    branches: [ main, develop ]
+
 
 jobs:
   rspec:

@@ -112,8 +112,8 @@ const CurrentPosts: NextPage = () => {
               <CardMedia
                 component="img"
                 sx={{
-                  width: 194,
-                  height: 194,
+                  width: { xs: '80%', sm: 194 },
+                  height: { xs: 'auto', sm: 194 },
                   mr: { sm: 2 },
                   mb: { xs: 1, sm: 0 },
                 }}
