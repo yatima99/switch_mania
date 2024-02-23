@@ -11,22 +11,29 @@ type PostCardProps = {
 
 const omit = (text: string) => (len: number) => (ellipsis: string) =>
   text.length >= len ? text.slice(0, len - ellipsis.length) + ellipsis : text
+
 const PostCard = (props: PostCardProps) => {
   return (
-    <Card sx={{ maxWidth: 545, m: 1, boxShadow: 3 }}>
+    <Card
+      sx={{
+        height: 300,
+        m: 1,
+        boxShadow: 3,
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <CardMedia
         component="img"
-        //height="194"
         image={props.image_url}
         alt="thumbnail"
         sx={{
           width: '100%',
-          height: 'auto',
-          objectFit: 'contain',
-          //maxHeight: '150px',
+          height: 180, // 画像の高さを固定
+          objectFit: 'cover',
         }}
       />
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1, overflow: 'hidden' }}>
         <Typography
           component="h3"
           sx={{
@@ -55,7 +62,14 @@ const PostCard = (props: PostCardProps) => {
           </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '4px',
+            overflow: 'hidden',
+          }}
+        >
           {props.tags.map((tag, index) => (
             <Chip key={index} label={tag.name} size="small" />
           ))}
