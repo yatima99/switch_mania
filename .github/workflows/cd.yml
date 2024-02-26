@@ -56,10 +56,19 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
+
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG -f ./rails/Dockerfile.prod ./rails
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY_RAILS:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+    - name: Prepare task definition
+      run: |
+        sed -i 's|${RAILS_MASTER_KEY}|'${{ secrets.RAILS_MASTER_KEY }}'|g' ./rails/task-definition.json
+        sed -i 's|${S3_AWS_ACCESS_KEY_ID}|'${{ secrets.S3_AWS_ACCESS_KEY_ID }}'|g' ./rails/task-definition.json
+        sed -i 's|${MAILER_SENDER}|'${{ secrets.MAILER_SENDER }}'|g' ./rails/task-definition.json
+        sed -i 's|${S3_AWS_SECRET_ACCESS_KEY}|'${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}'|g' ./rails/task-definition.json
+      shell: bash
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
