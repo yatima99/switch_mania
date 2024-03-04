@@ -150,7 +150,16 @@ const CurrentPostsEdit: NextPage = () => {
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop: onDropImage })
   const { getRootProps: getRootPropsAudio, getInputProps: getInputPropsAudio } =
-    useDropzone({ onDrop: onDropAudio })
+    useDropzone({
+      onDrop: onDropAudio,
+      accept: {
+        'audio/mp3': ['.mp3'],
+        'audio/wav': ['.wav'],
+        'audio/ogg': ['.ogg'],
+        'audio/aac': ['.aac'],
+        'audio/mp4': ['.m4a'],
+      },
+    })
 
   const onSubmit: SubmitHandler<PostFormData> = (data) => {
     if (data.title == '') {
@@ -341,6 +350,8 @@ const CurrentPostsEdit: NextPage = () => {
                 <input {...getInputPropsAudio()} />
                 <p>
                   ここに音声ファイルをドラッグ＆ドロップ、またはクリックしてファイルを選択
+                  <br />
+                  （許可されるファイルの拡張子:mp3, wav, ogg, aac, m4a）
                 </p>
               </div>
             </div>
