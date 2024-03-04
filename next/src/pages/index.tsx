@@ -8,12 +8,12 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
 import axios from 'axios'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
+import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -127,90 +127,95 @@ const Index: NextPage = () => {
   }
 
   return (
-    <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#E8F5E9' }}>
-      <Container maxWidth="md" sx={{ pt: 6 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Autocomplete
-            freeSolo
-            options={tagOptions}
-            value={tag}
-            onChange={(event, newValue) => setTag(newValue ?? '')}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="スイッチの種類（タグ）で絞り込み"
-                onKeyDown={handleKeyPress}
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={handleTagSearch} edge="end">
-                        <SearchIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            )}
-            sx={{ flexGrow: 1, mr: 1 }}
-          />
-        </Box>
+    <>
+      <Head>
+        <title>Switch Mania | 打鍵音投稿サイト</title>
+      </Head>
+      <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#E8F5E9' }}>
+        <Container maxWidth="md" sx={{ pt: 6 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Autocomplete
+              freeSolo
+              options={tagOptions}
+              value={tag}
+              onChange={(event, newValue) => setTag(newValue ?? '')}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="スイッチの種類（タグ）で絞り込み"
+                  onKeyDown={handleKeyPress}
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={handleTagSearch} edge="end">
+                          <SearchIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
+              sx={{ flexGrow: 1, mr: 1 }}
+            />
+          </Box>
 
-        {isLoggedIn() && recommendedPosts.length > 0 && (
-          <Box sx={{ mt: 4 }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>
-              おすすめの投稿
-            </Typography>
-            <Grid container spacing={4}>
-              {recommendedPosts.map((post) => (
-                <Grid key={post.id} item xs={6} md={4}>
-                  <Link href={'/posts/' + post.id}>
-                    <PostCard
-                      title={post.title}
-                      userName={post.user.name}
-                      avatar_url={post.user.image.url}
-                      image_url={post.image.url}
-                      tags={post.tags}
-                    />
-                  </Link>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        )}
+          {isLoggedIn() && recommendedPosts.length > 0 && (
+            <Box sx={{ mt: 4 }}>
+              <Typography variant="h5" sx={{ mb: 2 }}>
+                おすすめの投稿
+              </Typography>
+              <Grid container spacing={4}>
+                {recommendedPosts.map((post) => (
+                  <Grid key={post.id} item xs={6} md={4}>
+                    <Link href={'/posts/' + post.id}>
+                      <PostCard
+                        title={post.title}
+                        userName={post.user.name}
+                        avatar_url={post.user.image.url}
+                        image_url={post.image.url}
+                        tags={post.tags}
+                      />
+                    </Link>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          )}
 
-        {posts.length > 0 ? (
-          <Box sx={{ mt: 4 }}>
-            <Grid container spacing={1}>
-              {posts.map((post: PostProps) => (
-                <Grid key={post.id} item xs={6} md={4}>
-                  <Link href={'/posts/' + post.id}>
-                    <PostCard
-                      title={post.title}
-                      userName={post.user.name}
-                      avatar_url={post.user.image.url}
-                      image_url={post.image.url}
-                      tags={post.tags}
-                    />
-                  </Link>
-                </Grid>
-              ))}
-            </Grid>
+          {posts.length > 0 ? (
+            <Box sx={{ mt: 4 }}>
+              <Grid container spacing={1}>
+                {posts.map((post: PostProps) => (
+                  <Grid key={post.id} item xs={6} md={4}>
+                    <Link href={'/posts/' + post.id}>
+                      <PostCard
+                        title={post.title}
+                        userName={post.user.name}
+                        avatar_url={post.user.image.url}
+                        image_url={post.image.url}
+                        tags={post.tags}
+                      />
+                    </Link>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          ) : (
+            <Box sx={{ textAlign: 'center', py: 4 }}>
+              <Typography>検索結果はありません</Typography>
+            </Box>
+          )}
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
+            <Pagination
+              count={meta.totalPages}
+              page={meta.currentPage}
+              onChange={handleChange}
+            />
           </Box>
-        ) : (
-          <Box sx={{ textAlign: 'center', py: 4 }}>
-            <Typography>検索結果はありません</Typography>
-          </Box>
-        )}
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
-          <Pagination
-            count={meta.totalPages}
-            page={meta.currentPage}
-            onChange={handleChange}
-          />
-        </Box>
-      </Container>
-    </Box>
+        </Container>
+      </Box>
+    </>
   )
 }
 

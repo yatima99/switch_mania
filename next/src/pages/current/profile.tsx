@@ -8,6 +8,7 @@ import {
 } from '@mui/material'
 import axios from 'axios'
 import type { NextPage } from 'next'
+import Head from 'next/head'
 import { useEffect, useState, useMemo, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
@@ -131,98 +132,108 @@ const ProfileSettings: NextPage = () => {
   if (!data || !isFetched) return <Loading />
 
   return (
-    <Container sx={{ backgroundColor: '#E8F5E9' }}>
-      <Container
-        maxWidth="sm"
-        sx={{
-          py: 4,
-          bgcolor: 'background.default',
-          minHeight: '100vh',
-          backgroundColor: '#E8F5E9',
-        }}
-      >
-        <Box
-          component="form"
-          onSubmit={handleSubmit(onSubmit)}
-          sx={{ backgroundColor: 'white', p: 3, boxShadow: 3, borderRadius: 2 }}
+    <>
+      <Head>
+        <title>プロフィール設定 | Switch Mania</title>
+      </Head>
+      <Container sx={{ backgroundColor: '#E8F5E9' }}>
+        <Container
+          maxWidth="sm"
+          sx={{
+            py: 4,
+            bgcolor: 'background.default',
+            minHeight: '100vh',
+            backgroundColor: '#E8F5E9',
+          }}
         >
-          <Typography variant="h4" sx={{ mb: 3, textAlign: 'center' }}>
-            プロフィール設定
-          </Typography>
           <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
             sx={{
-              mb: 2,
-              p: 2,
-              border: '1px dashed grey',
-              borderRadius: '4px',
+              backgroundColor: 'white',
+              p: 3,
+              boxShadow: 3,
+              borderRadius: 2,
             }}
           >
-            <div {...getRootProps()} style={{ cursor: 'pointer' }}>
-              <input {...getInputProps()} />
-              <Typography variant="body2" sx={{ mt: 1, textAlign: 'center' }}>
-                アイコン選択
-              </Typography>
-              <Avatar
-                alt="User Avatar"
-                src={imagePreview || undefined}
-                sx={{ width: 100, height: 100, mx: 'auto', my: 2 }}
-              />
-            </div>
+            <Typography variant="h4" sx={{ mb: 3, textAlign: 'center' }}>
+              プロフィール設定
+            </Typography>
+            <Box
+              sx={{
+                mb: 2,
+                p: 2,
+                border: '1px dashed grey',
+                borderRadius: '4px',
+              }}
+            >
+              <div {...getRootProps()} style={{ cursor: 'pointer' }}>
+                <input {...getInputProps()} />
+                <Typography variant="body2" sx={{ mt: 1, textAlign: 'center' }}>
+                  アイコン選択
+                </Typography>
+                <Avatar
+                  alt="User Avatar"
+                  src={imagePreview || undefined}
+                  sx={{ width: 100, height: 100, mx: 'auto', my: 2 }}
+                />
+              </div>
+            </Box>
+            <Typography variant="body2" sx={{ mt: 3, textAlign: 'left' }}>
+              ユーザー名
+            </Typography>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  type="text"
+                  error={fieldState.invalid}
+                  helperText={fieldState.error?.message}
+                  placeholder="名前"
+                  fullWidth
+                  sx={{ mt: 1, mb: 3 }}
+                />
+              )}
+            />
+            <Typography variant="body2" sx={{ mt: 1, textAlign: 'left' }}>
+              自己紹介
+            </Typography>
+            <Controller
+              name="bio"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  type="text"
+                  error={fieldState.invalid}
+                  helperText={fieldState.error?.message}
+                  multiline
+                  fullWidth
+                  placeholder="自己紹介"
+                  rows={10}
+                  sx={{ mt: 1, mb: 3 }}
+                />
+              )}
+            />
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                mt: 2,
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: { xs: 12, sm: 16 },
+                width: '100%',
+              }}
+            >
+              更新する
+            </Button>
           </Box>
-          <Typography variant="body2" sx={{ mt: 3, textAlign: 'left' }}>
-            ユーザー名
-          </Typography>
-          <Controller
-            name="name"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                type="text"
-                error={fieldState.invalid}
-                helperText={fieldState.error?.message}
-                placeholder="名前"
-                fullWidth
-                sx={{ mt: 1, mb: 3 }}
-              />
-            )}
-          />
-          <Typography variant="body2" sx={{ mt: 1, textAlign: 'left' }}>
-            自己紹介
-          </Typography>
-          <Controller
-            name="bio"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                type="text"
-                error={fieldState.invalid}
-                helperText={fieldState.error?.message}
-                multiline
-                fullWidth
-                placeholder="自己紹介"
-                rows={10}
-                sx={{ mt: 1, mb: 3 }}
-              />
-            )}
-          />
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{
-              mt: 2,
-              color: 'white',
-              fontWeight: 'bold',
-              fontSize: { xs: 12, sm: 16 },
-              width: '100%',
-            }}
-          >
-            更新する
-          </Button>
-        </Box>
+        </Container>
       </Container>
-    </Container>
+    </>
   )
 }
 

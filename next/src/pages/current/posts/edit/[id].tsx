@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 import axios, { AxiosError } from 'axios'
 import type { NextPage } from 'next'
+import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -219,213 +220,218 @@ const CurrentPostsEdit: NextPage = () => {
   if (!data || !isFetched) return <Loading />
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-      sx={{ backgroundColor: '#E8F5E9', minHeight: '100vh' }}
-    >
-      <AppBar
-        position="fixed"
-        sx={{
-          backgroundColor: '#ffffff',
-        }}
+    <>
+      <Head>
+        <title>投稿の編集 | Switch Mania</title>
+      </Head>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{ backgroundColor: '#E8F5E9', minHeight: '100vh' }}
       >
-        <Toolbar
+        <AppBar
+          position="fixed"
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            backgroundColor: '#ffffff',
           }}
         >
-          <Box sx={{ width: 50 }}>
-            <Link href="/current/posts">
-              <IconButton>
-                <ArrowBackSharpIcon />
-              </IconButton>
-            </Link>
-          </Box>
-          <Box
+          <Toolbar
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              gap: { xs: '0 16px', sm: '0 24px' },
             }}
           >
-            <Box sx={{ textAlign: 'center' }}>
-              <Switch
-                checked={statusChecked}
-                onChange={handleChangeStatusChecked}
-              />
-              <Typography sx={{ fontSize: { xs: 12, sm: 15 } }}>
-                下書き／公開
-              </Typography>
+            <Box sx={{ width: 50 }}>
+              <Link href="/current/posts">
+                <IconButton>
+                  <ArrowBackSharpIcon />
+                </IconButton>
+              </Link>
             </Box>
-            <Button
-              variant="contained"
-              type="submit"
+            <Box
               sx={{
-                color: 'white',
-                fontWeight: 'bold',
-                fontSize: { xs: 12, sm: 16 },
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: { xs: '0 16px', sm: '0 24px' },
               }}
             >
-              更新する
-            </Button>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Container
-        maxWidth="lg"
-        sx={{ pt: 11, pb: 3, display: 'flex', justifyContent: 'center' }}
-      >
-        <Box sx={{ width: 840 }}>
-          <Box sx={{ mb: 2 }}>
-            <h1>タイトル</h1>
-            <Controller
-              name="title"
-              control={control}
-              render={({ field, fieldState }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  error={fieldState.invalid}
-                  helperText={fieldState.error?.message}
-                  placeholder="Write in Title"
-                  fullWidth
-                  sx={{ backgroundColor: 'white' }}
+              <Box sx={{ textAlign: 'center' }}>
+                <Switch
+                  checked={statusChecked}
+                  onChange={handleChangeStatusChecked}
                 />
-              )}
-            />
-          </Box>
-          <Box sx={{ mb: 2 }}>
-            <h1>画像</h1>
-            <div>
-              {imagePreview && (
-                <Image
-                  src={imagePreview}
-                  width={300}
-                  height={200}
-                  alt="Preview"
-                />
-              )}
-
-              <div
-                {...getRootProps()}
-                style={{
-                  border: '2px dashed #cccccc',
-                  padding: '20px',
-                  textAlign: 'center',
-                  marginTop: '10px',
-                  cursor: 'pointer',
+                <Typography sx={{ fontSize: { xs: 12, sm: 15 } }}>
+                  下書き／公開
+                </Typography>
+              </Box>
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: { xs: 12, sm: 16 },
                 }}
               >
-                <input {...getInputProps()} />
-                <p>
-                  ここに画像ファイルをドラッグ＆ドロップ、またはクリックしてファイルを選択
-                </p>
-              </div>
-            </div>
-          </Box>
-
-          <Box sx={{ mb: 2 }}>
-            <h1>音声ファイル</h1>
-            <div>
-              {audioPreview && (
-                <audio controls>
-                  <source src={audioPreview} type="audio/mpeg" />
-                  お使いのブラウザはオーディオタグをサポートしていません。
-                </audio>
-              )}
-              <div
-                {...getRootPropsAudio()}
-                style={{
-                  border: '2px dashed #cccccc',
-                  padding: '20px',
-                  textAlign: 'center',
-                  marginTop: '10px',
-                  cursor: 'pointer',
-                }}
-              >
-                <input {...getInputPropsAudio()} />
-                <p>
-                  ここに音声ファイルをドラッグ＆ドロップ、またはクリックしてファイルを選択
-                  <br />
-                  （許可されるファイルの拡張子:mp3, wav, ogg, aac, m4a）
-                </p>
-              </div>
-            </div>
-          </Box>
-
-          <Box>
-            <h1>説明</h1>
-            <Controller
-              name="content"
-              control={control}
-              render={({ field, fieldState }) => (
-                <TextField
-                  {...field}
-                  type="textarea"
-                  error={fieldState.invalid}
-                  helperText={fieldState.error?.message}
-                  multiline
-                  fullWidth
-                  placeholder="Write in Text"
-                  rows={10}
-                  sx={{ backgroundColor: 'white' }}
-                />
-              )}
-            />
-          </Box>
-          <Box sx={{ mt: 4 }}>
-            <Autocomplete
-              multiple
-              id="tags-filled"
-              options={allTags.map((tag: Tag) => tag.name)}
-              freeSolo
-              filterSelectedOptions
-              value={tags.map((tag) => tag.name)}
-              onChange={(event, newValue) => {
-                const newTags = newValue.map((value) => {
-                  if (typeof value === 'string') {
-                    return { id: Date.now().toString(), name: value }
-                  } else {
-                    return (
-                      allTags.find((tag: Tag) => tag.name === value) || {
-                        id: Date.now().toString(),
-                        name: value,
-                      }
-                    )
-                  }
-                })
-                setTags(newTags)
-              }}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  // eslint-disable-next-line react/jsx-key
-                  <Chip
-                    label={option}
-                    {...getTagProps({ index })}
-                    sx={{
-                      bgcolor: 'limegreen',
-                      color: 'white',
-                    }}
+                更新する
+              </Button>
+            </Box>
+          </Toolbar>
+        </AppBar>
+        <Container
+          maxWidth="lg"
+          sx={{ pt: 11, pb: 3, display: 'flex', justifyContent: 'center' }}
+        >
+          <Box sx={{ width: 840 }}>
+            <Box sx={{ mb: 2 }}>
+              <h1>タイトル</h1>
+              <Controller
+                name="title"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    {...field}
+                    type="text"
+                    error={fieldState.invalid}
+                    helperText={fieldState.error?.message}
+                    placeholder="Write in Title"
+                    fullWidth
+                    sx={{ backgroundColor: 'white' }}
                   />
-                ))
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  label="タグを入力"
-                  placeholder="タグを選択、または入力してEnter"
-                />
-              )}
-            />
+                )}
+              />
+            </Box>
+            <Box sx={{ mb: 2 }}>
+              <h1>画像</h1>
+              <div>
+                {imagePreview && (
+                  <Image
+                    src={imagePreview}
+                    width={300}
+                    height={200}
+                    alt="Preview"
+                  />
+                )}
+
+                <div
+                  {...getRootProps()}
+                  style={{
+                    border: '2px dashed #cccccc',
+                    padding: '20px',
+                    textAlign: 'center',
+                    marginTop: '10px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input {...getInputProps()} />
+                  <p>
+                    ここに画像ファイルをドラッグ＆ドロップ、またはクリックしてファイルを選択
+                  </p>
+                </div>
+              </div>
+            </Box>
+
+            <Box sx={{ mb: 2 }}>
+              <h1>音声ファイル</h1>
+              <div>
+                {audioPreview && (
+                  <audio controls>
+                    <source src={audioPreview} type="audio/mpeg" />
+                    お使いのブラウザはオーディオタグをサポートしていません。
+                  </audio>
+                )}
+                <div
+                  {...getRootPropsAudio()}
+                  style={{
+                    border: '2px dashed #cccccc',
+                    padding: '20px',
+                    textAlign: 'center',
+                    marginTop: '10px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input {...getInputPropsAudio()} />
+                  <p>
+                    ここに音声ファイルをドラッグ＆ドロップ、またはクリックしてファイルを選択
+                    <br />
+                    （許可されるファイルの拡張子:mp3, wav, ogg, aac, m4a）
+                  </p>
+                </div>
+              </div>
+            </Box>
+
+            <Box>
+              <h1>説明</h1>
+              <Controller
+                name="content"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    {...field}
+                    type="textarea"
+                    error={fieldState.invalid}
+                    helperText={fieldState.error?.message}
+                    multiline
+                    fullWidth
+                    placeholder="Write in Text"
+                    rows={10}
+                    sx={{ backgroundColor: 'white' }}
+                  />
+                )}
+              />
+            </Box>
+            <Box sx={{ mt: 4 }}>
+              <Autocomplete
+                multiple
+                id="tags-filled"
+                options={allTags.map((tag: Tag) => tag.name)}
+                freeSolo
+                filterSelectedOptions
+                value={tags.map((tag) => tag.name)}
+                onChange={(event, newValue) => {
+                  const newTags = newValue.map((value) => {
+                    if (typeof value === 'string') {
+                      return { id: Date.now().toString(), name: value }
+                    } else {
+                      return (
+                        allTags.find((tag: Tag) => tag.name === value) || {
+                          id: Date.now().toString(),
+                          name: value,
+                        }
+                      )
+                    }
+                  })
+                  setTags(newTags)
+                }}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    // eslint-disable-next-line react/jsx-key
+                    <Chip
+                      label={option}
+                      {...getTagProps({ index })}
+                      sx={{
+                        bgcolor: 'limegreen',
+                        color: 'white',
+                      }}
+                    />
+                  ))
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    label="タグを入力"
+                    placeholder="タグを選択、または入力してEnter"
+                  />
+                )}
+              />
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    </Box>
+        </Container>
+      </Box>
+    </>
   )
 }
 
