@@ -1,6 +1,7 @@
 import { Box, Container, Grid, Typography } from '@mui/material'
 import camelcaseKeys from 'camelcase-keys'
 import type { NextPage } from 'next'
+import Head from 'next/head'
 import Link from 'next/link'
 import useSWR from 'swr'
 import Error from '@/components/Error'
@@ -41,6 +42,9 @@ const LikesPosts: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>いいね一覧 | Switch Mania</title>
+      </Head>
       <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#FFF0F5' }}>
         <Typography
           component="h1"

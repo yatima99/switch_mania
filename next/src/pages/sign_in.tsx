@@ -8,9 +8,11 @@ import {
 } from '@mui/material'
 import axios, { AxiosResponse, AxiosError } from 'axios'
 import type { NextPage } from 'next'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useUserState, useSnackbarState } from '@/hooks/useGlobalState'
+
 type SignInFormData = {
   email: string
   password: string
@@ -107,85 +109,90 @@ const SignIn: NextPage = () => {
   }
 
   return (
-    <Box
-      sx={{
-        backgroundColor: '#f5f5f5',
-        minHeight: 'calc(100vh - 57px)',
-      }}
-    >
-      <Container maxWidth="sm">
-        <Box sx={{ mb: 4, pt: 4 }}>
-          <Typography
-            component="h2"
-            sx={{ fontSize: 32, color: 'black', fontWeight: 'bold' }}
-          >
-            Sign in
-          </Typography>
-        </Box>
-        <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={2}>
-          <Controller
-            name="email"
-            control={control}
-            rules={validationRules.email}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                type="text"
-                label="メールアドレス"
-                error={fieldState.invalid}
-                helperText={fieldState.error?.message}
-                sx={{ backgroundColor: 'white' }}
-              />
-            )}
-          />
-          <Controller
-            name="password"
-            control={control}
-            rules={validationRules.password}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                type="password"
-                label="パスワード"
-                error={fieldState.invalid}
-                helperText={fieldState.error?.message}
-                sx={{ backgroundColor: 'white' }}
-              />
-            )}
-          />
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{ fontWeight: 'bold', color: 'white' }}
-          >
-            送信
-          </Button>
-          <Typography textAlign="center" sx={{ my: 2 }}>
-            または
-          </Typography>
-          <Button
-            variant="outlined"
-            sx={{
-              textTransform: 'none',
-              fontSize: 16,
-              lineHeight: '27px',
-              borderRadius: 2,
-              boxShadow: 'none',
-              border: '1.5px solid #4CAF50',
-              backgroundColor: '#4CAF50',
-              color: 'white',
-              '&:hover': {
-                backgroundColor: '#45a049',
-                borderColor: '#45a049',
-              },
-            }}
-            onClick={guestLogin}
-          >
-            Guest Login
-          </Button>
-        </Stack>
-      </Container>
-    </Box>
+    <>
+      <Head>
+        <title> Sign in | Switch Mania </title>
+      </Head>
+      <Box
+        sx={{
+          backgroundColor: '#E8F5E9',
+          minHeight: 'calc(100vh - 57px)',
+        }}
+      >
+        <Container maxWidth="sm">
+          <Box sx={{ mb: 4, pt: 4 }}>
+            <Typography
+              component="h2"
+              sx={{ fontSize: 32, color: 'black', fontWeight: 'bold' }}
+            >
+              Sign in
+            </Typography>
+          </Box>
+          <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={2}>
+            <Controller
+              name="email"
+              control={control}
+              rules={validationRules.email}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  type="text"
+                  label="メールアドレス"
+                  error={fieldState.invalid}
+                  helperText={fieldState.error?.message}
+                  sx={{ backgroundColor: 'white' }}
+                />
+              )}
+            />
+            <Controller
+              name="password"
+              control={control}
+              rules={validationRules.password}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  type="password"
+                  label="パスワード"
+                  error={fieldState.invalid}
+                  helperText={fieldState.error?.message}
+                  sx={{ backgroundColor: 'white' }}
+                />
+              )}
+            />
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ fontWeight: 'bold', color: 'white' }}
+            >
+              送信
+            </Button>
+            <Typography textAlign="center" sx={{ my: 2 }}>
+              または
+            </Typography>
+            <Button
+              variant="outlined"
+              sx={{
+                textTransform: 'none',
+                fontSize: 16,
+                lineHeight: '27px',
+                borderRadius: 2,
+                boxShadow: 'none',
+                border: '1.5px solid #4CAF50',
+                backgroundColor: '#4CAF50',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#45a049',
+                  borderColor: '#45a049',
+                },
+              }}
+              onClick={guestLogin}
+            >
+              Guest Login
+            </Button>
+          </Stack>
+        </Container>
+      </Box>
+    </>
   )
 }
 export default SignIn
