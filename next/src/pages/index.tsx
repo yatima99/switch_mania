@@ -129,7 +129,7 @@ const Index: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Switch Mania | 打鍵音投稿サイト</title>
+        <title>打鍵音投稿サイト | Switch Mania</title>
       </Head>
       <Box css={styles.pageMinHeight} sx={{ backgroundColor: '#E8F5E9' }}>
         <Container maxWidth="md" sx={{ pt: 6 }}>
