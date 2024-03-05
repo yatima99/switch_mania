@@ -115,7 +115,7 @@ const SignIn: NextPage = () => {
       </Head>
       <Box
         sx={{
-          backgroundColor: '#f5f5f5',
+          backgroundColor: '#E8F5E9',
           minHeight: 'calc(100vh - 57px)',
         }}
       >
