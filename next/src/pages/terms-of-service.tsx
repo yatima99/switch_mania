@@ -1,11 +1,4 @@
-import {
-  Container,
-  Typography,
-  Paper,
-  List,
-  ListItem,
-  ListItemText,
-} from '@mui/material'
+import { Container, Typography, Paper, List, ListItem } from '@mui/material'
 import Head from 'next/head'
 import React from 'react'
 
@@ -46,25 +39,8 @@ const TermsOfServicePage = () => {
             </ListItem>
             <ListItem>
               2.
-              当社は，利用登録の申請者に以下の事由があると判断した場合，利用登録の申請を承認しないことがあり，その理由については一切の開示義務を負わないものとします。
+              当社が利用登録を相当でないと判断した場合，利用登録の申請を承認しないことがあり，その理由については一切の開示義務を負わないものとします。
             </ListItem>
-            <List component="div" disablePadding>
-              <ListItem sx={{ pl: 4 }}>
-                <ListItemText>
-                  1. 利用登録の申請に際して虚偽の事項を届け出た場合
-                </ListItemText>
-              </ListItem>
-              <ListItem sx={{ pl: 4 }}>
-                <ListItemText>
-                  2. 本規約に違反したことがある者からの申請である場合
-                </ListItemText>
-              </ListItem>
-              <ListItem sx={{ pl: 4 }}>
-                <ListItemText>
-                  3. その他，当社が利用登録を相当でないと判断した場合
-                </ListItemText>
-              </ListItem>
-            </List>
           </List>
 
           <Typography variant="h6">
@@ -84,18 +60,8 @@ const TermsOfServicePage = () => {
               ユーザーID及びパスワードが第三者によって使用されたことによって生じた損害は，当社に故意又は重大な過失がある場合を除き，当社は一切の責任を負わないものとします。
             </ListItem>
           </List>
-          <Typography variant="h6">第4条（利用料金および支払方法）</Typography>
-          <List>
-            <ListItem>
-              1.
-              ユーザーは，本サービスの有料部分の対価として，当社が別途定め，本ウェブサイトに表示する利用料金を，当社が指定する方法により支払うものとします。
-            </ListItem>
-            <ListItem>
-              2.
-              ユーザーが利用料金の支払を遅滞した場合には，ユーザーは年14．6％の割合による遅延損害金を支払うものとします。
-            </ListItem>
-          </List>
-          <Typography variant="h6">第5条（禁止事項）</Typography>
+
+          <Typography variant="h6">第4条（禁止事項）</Typography>
           <Typography paragraph>
             ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。
           </Typography>
@@ -122,122 +88,12 @@ const TermsOfServicePage = () => {
               9.
               当社，本サービスの他のユーザーまたは第三者の知的財産権，肖像権，プライバシー，名誉その他の権利または利益を侵害する行為
             </ListItem>
-            <ListItem>
-              10.
-              以下の表現を含み，または含むと当社が判断する内容を本サービス上に投稿し，または送信する行為
-            </ListItem>
-            <ListItem>
-              <List component="div" disablePadding>
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>1. 過度に暴力的な表現</ListItemText>
-                </ListItem>
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>2. 露骨な性的表現</ListItemText>
-                </ListItem>
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>
-                    3.
-                    人種，国籍，信条，性別，社会的身分，門地等による差別につながる表現
-                  </ListItemText>
-                </ListItem>
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>
-                    4. 自殺，自傷行為，薬物乱用を誘引または助長する表現
-                  </ListItemText>
-                </ListItem>
 
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>
-                    5. その他反社会的な内容を含み他人に不快感を与える表現
-                  </ListItemText>
-                </ListItem>
-              </List>
-            </ListItem>
-            <ListItem>
-              11. 以下を目的とし，または目的とすると当社が判断する行為
-            </ListItem>
-            <ListItem>
-              <List component="div" disablePadding>
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>
-                    1.
-                    営業，宣伝，広告，勧誘，その他営利を目的とする行為（当社の認めたものを除きます。）
-                  </ListItemText>
-                </ListItem>
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>
-                    2. 性行為やわいせつな行為を目的とする行為
-                  </ListItemText>
-                </ListItem>
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>
-                    3. 面識のない異性との出会いや交際を目的とする行為
-                  </ListItemText>
-                </ListItem>
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>
-                    4. 他のユーザーに対する嫌がらせや誹謗中傷を目的とする行為
-                  </ListItemText>
-                </ListItem>
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>
-                    5.
-                    当社，本サービスの他のユーザー，または第三者に不利益，損害または不快感を与えることを目的とする行為
-                  </ListItemText>
-                </ListItem>
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>
-                    6.
-                    その他本サービスが予定している利用目的と異なる目的で本サービスを利用する行為
-                  </ListItemText>
-                </ListItem>
-              </List>
-            </ListItem>
-            <ListItem>12. 宗教活動または宗教団体への勧誘行為</ListItem>
-            <ListItem>13. その他，当社が不適切と判断する行為</ListItem>
+            <ListItem>10. 宗教活動または宗教団体への勧誘行為</ListItem>
+            <ListItem>11. その他，当社が不適切と判断する行為</ListItem>
           </List>
 
-          <Typography variant="h6">
-            第6条（本サービスの提供の停止等）
-          </Typography>
-          <List>
-            <ListItem>
-              1.
-              当社は，以下のいずれかの事由があると判断した場合，ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。
-            </ListItem>
-
-            <List>
-              <ListItem sx={{ pl: 4 }}>
-                <ListItemText>
-                  1.
-                  本サービスにかかるコンピュータシステムの保守点検または更新を行う場合
-                </ListItemText>
-              </ListItem>
-              <ListItem sx={{ pl: 4 }}>
-                <ListItemText>
-                  2.
-                  地震，落雷，火災，停電または天災などの不可抗力により，本サービスの提供が困難となった場合
-                </ListItemText>
-              </ListItem>
-              <ListItem sx={{ pl: 4 }}>
-                <ListItemText>
-                  3. コンピュータまたは通信回線等が事故により停止した場合
-                </ListItemText>
-              </ListItem>
-              <ListItem sx={{ pl: 4 }}>
-                <ListItemText>
-                  4. その他，当社が本サービスの提供が困難と判断した場合
-                </ListItemText>
-              </ListItem>
-            </List>
-
-            <ListItem>
-              2.
-              当社は，本サービスの提供の停止または中断により，ユーザーまたは第三者が被ったいかなる不利益または損害についても，一切の責任を負わないものとします。
-            </ListItem>
-          </List>
-
-          <Typography variant="h6">第7条（著作権）</Typography>
+          <Typography variant="h6">第5条（著作権）</Typography>
           <List>
             <ListItem>
               1.
@@ -253,68 +109,8 @@ const TermsOfServicePage = () => {
             </ListItem>
           </List>
 
-          <Typography variant="h6">第8条（利用制限および登録抹消）</Typography>
-          <List>
-            <List>
-              <ListItem>
-                1.
-                当社は，ユーザーが以下のいずれかに該当する場合には，事前の通知なく，投稿データを削除し，ユーザーに対して本サービスの全部もしくは一部の利用を制限しまたはユーザーとしての登録を抹消することができるものとします。
-              </ListItem>
-              <ListItem>
-                <List component="div" disablePadding>
-                  <ListItem sx={{ pl: 4 }}>
-                    <ListItemText>
-                      1. 本規約のいずれかの条項に違反した場合
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem sx={{ pl: 4 }}>
-                    <ListItemText>
-                      2. 登録事項に虚偽の事実があることが判明した場合
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem sx={{ pl: 4 }}>
-                    <ListItemText>
-                      3.
-                      決済手段として当該ユーザーが届け出たクレジットカードが利用停止となった場合
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem sx={{ pl: 4 }}>
-                    <ListItemText>
-                      4. 料金等の支払債務の不履行があった場合
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem sx={{ pl: 4 }}>
-                    <ListItemText>
-                      5. 当社からの連絡に対し，一定期間返答がない場合
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem sx={{ pl: 4 }}>
-                    <ListItemText>
-                      6.
-                      本サービスについて，最終の利用から一定期間利用がない場合
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem sx={{ pl: 4 }}>
-                    <ListItemText>
-                      7.
-                      その他，当社が本サービスの利用を適当でないと判断した場合
-                    </ListItemText>
-                  </ListItem>
-                </List>
-              </ListItem>
-              <ListItem>
-                2.
-                当社はユーザーに対し、前項による本規約の変更にあたり、事前に、本規約を変更する旨及び変更後の本規約の内容並びにその効力発生時期を通知します。
-              </ListItem>
-            </List>
-          </List>
-
-          <Typography variant="h6">第9条（退会）</Typography>
-          <Typography paragraph>
-            ユーザーは，当社の定める退会手続により，本サービスから退会できるものとします。
-          </Typography>
           <Typography variant="h6">
-            第10条（保証の否認および免責事項）
+            第8条（保証の否認および免責事項）
           </Typography>
           <List>
             <ListItem>
@@ -334,60 +130,42 @@ const TermsOfServicePage = () => {
             </ListItem>
           </List>
 
-          <Typography variant="h6">第11条（サービス内容の変更等）</Typography>
+          <Typography variant="h6">第9条（サービス内容の変更等）</Typography>
           <Typography paragraph>
             当社は，ユーザーへの事前の告知をもって、本サービスの内容を変更、追加または廃止することがあり、ユーザーはこれを承諾するものとします。
           </Typography>
 
-          <Typography variant="h6">第12条（利用規約の変更）</Typography>
+          <Typography variant="h6">第10条（利用規約の変更）</Typography>
           <List>
             <ListItem>
               1.
-              当社は以下の場合には、ユーザーの個別の同意を要せず、本規約を変更することができるものとします。
+              当社は本規約の変更が本サービス利用契約の目的に反せず、かつ、変更の必要性、変更後の内容の相当性その他の変更に係る事情に照らして合理的なものである場合、ユーザーの個別の同意を要せず、本規約を変更することができるものとします。
             </ListItem>
-            <ListItem>
-              <List component="div" disablePadding>
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>
-                    1. 本規約の変更がユーザーの一般の利益に適合するとき。
-                  </ListItemText>
-                </ListItem>
-                <ListItem sx={{ pl: 4 }}>
-                  <ListItemText>
-                    2.
-                    本規約の変更が本サービス利用契約の目的に反せず、かつ、変更の必要性、変更後の内容の相当性その他の変更に係る事情に照らして合理的なものであるとき。
-                  </ListItemText>
-                </ListItem>
-              </List>
-            </ListItem>
+
             <ListItem>
               2.
               当社はユーザーに対し、前項による本規約の変更にあたり、事前に、本規約を変更する旨及び変更後の本規約の内容並びにその効力発生時期を通知します。
             </ListItem>
           </List>
 
-          <Typography variant="h6">第13条（個人情報の取扱い）</Typography>
+          <Typography variant="h6">第11条（個人情報の取扱い）</Typography>
           <Typography paragraph>
             当社は，本サービスの利用によって取得する個人情報については，当社「プライバシーポリシー」に従い適切に取り扱うものとします。
           </Typography>
 
-          <Typography variant="h6">第14条（通知または連絡）</Typography>
+          <Typography variant="h6">第12条（通知または連絡）</Typography>
           <Typography paragraph>
             ユーザーと当社との間の通知または連絡は，当社の定める方法によって行うものとします。当社は,ユーザーから,当社が別途定める方式に従った変更届け出がない限り,現在登録されている連絡先が有効なものとみなして当該連絡先へ通知または連絡を行い,これらは,発信時にユーザーへ到達したものとみなします。
           </Typography>
 
-          <Typography variant="h6">第15条（権利義務の譲渡の禁止）</Typography>
+          <Typography variant="h6">第13条（権利義務の譲渡の禁止）</Typography>
           <Typography paragraph>
             ユーザーは，当社の書面による事前の承諾なく，利用契約上の地位または本規約に基づく権利もしくは義務を第三者に譲渡し，または担保に供することはできません。
           </Typography>
-          <Typography variant="h6">第16条（準拠法・裁判管轄）</Typography>
-          <List>
-            <ListItem>1. 第16条（準拠法・裁判管轄）</ListItem>
-            <ListItem>
-              2.
-              本サービスに関して紛争が生じた場合には，当社の本店所在地を管轄する裁判所を専属的合意管轄とします。
-            </ListItem>
-          </List>
+          <Typography variant="h6">第14条（準拠法・裁判管轄）</Typography>
+          <Typography>
+            本規約は日本語を正文とし、その準拠法は日本法とします。本サービスに起因または関連してユーザーと当社との間に生じた紛争については東京地方裁判所または東京簡易裁判所を第一審の専属的合意管轄裁判所とします。この管轄裁判所で得られた判決は、外国においても執行される可能性があります。
+          </Typography>
         </Paper>
       </Container>
     </>

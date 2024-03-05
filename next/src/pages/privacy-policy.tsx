@@ -14,18 +14,18 @@ const PrivacyPolicyPage = () => {
           <Typography variant="h4" gutterBottom>
             プライバシーポリシー
           </Typography>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
             お客様から取得する情報
           </Typography>
           <List>
             <ListItem>氏名(ニックネームやペンネームも含む)</ListItem>
             <ListItem>メールアドレス</ListItem>
-            <ListItem>写真や動画</ListItem>
+            <ListItem>写真や音声</ListItem>
             <ListItem>
               外部サービスでお客様が利用するID、その他外部サービスのプライバシー設定によりお客様が連携先に開示を認めた情報
             </ListItem>
           </List>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
             お客様の情報を利用する目的
           </Typography>
           <List>
@@ -46,14 +46,14 @@ const PrivacyPolicyPage = () => {
               以上の他、当社サービスの提供、維持、保護及び改善のため
             </ListItem>
           </List>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
             安全管理のために講じた措置
           </Typography>
           <Typography paragraph>
             当社が、お客様から取得した情報に関して安全管理のために講じた措置につきましては、末尾記載のお問い合わせ先にご連絡をいただきましたら、法令の定めに従い個別にご回答させていただきます。
           </Typography>
 
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
             第三者提供
           </Typography>
           <Typography paragraph>
@@ -70,19 +70,19 @@ const PrivacyPolicyPage = () => {
               その他、法律によって合法的に第三者提供が許されている場合
             </ListItem>
           </List>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
             プライバシーポリシーの変更
           </Typography>
           <Typography paragraph>
             当社は、必要に応じて、このプライバシーポリシーの内容を変更します。この場合、変更後のプライバシーポリシーの施行時期と内容を適切な方法により周知または通知します。
           </Typography>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
             お問い合わせ
           </Typography>
           <Typography paragraph>
             お客様の情報の開示、情報の訂正、利用停止、削除をご希望の場合は、以下のメールアドレスにご連絡ください。
           </Typography>
-          <Typography paragraph>support@switchmania.com</Typography>
+          <Typography paragraph>yatima99@switchmania.com</Typography>
           <Typography paragraph>
             この場合、必ず、運転免許証のご提示等当社が指定する方法により、ご本人からのご請求であることの確認をさせていただきます。なお、情報の開示請求については、開示の有無に関わらず、ご申請時に一件あたり1,000円の事務手数料を申し受けます。
           </Typography>
